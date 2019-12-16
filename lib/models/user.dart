@@ -1,7 +1,4 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ringl8/models/group.dart';
 
@@ -9,14 +6,30 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User {
-  final String uid;
-  final String name;
-  final String email;
-  final List<Group> groups;
+  String uid;
+  String firstName;
+  String lastName;
+  String email;
+  List<Group> groups;
 
-  User({this.uid, this.name, this.email, this.groups});
+  User({this.uid, this.firstName, this.lastName, this.email, this.groups});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  factory User.fromFirebase(FirebaseUser firebaseUser) {
+    return User(uid: firebaseUser.uid, email: firebaseUser.email);
+  }
+
+  factory User.fromMap(Map<dynamic, dynamic> data) {
+    return User(
+      uid: data['uid'],
+      firstName: data['firstName'],
+      lastName: data['lastName'],
+      email: data['email'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 
 //  static Future<List<User>> fetchAll() async {
 //    var uri = Endpoint.uri('/users');

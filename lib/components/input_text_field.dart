@@ -35,7 +35,7 @@ class InputTextField extends StatelessWidget {
     validator,
   })  : _bottomMargin = bottomMargin ?? 20.0,
         _hintStyle = hintStyle ?? _dTextStyle,
-        _hintText = hintText,
+        _hintText = hintText, // ?? labelText,
         _icon = icon,
         _iconColor = iconColor ?? _dColor,
         _keyboardType = keyboardType,

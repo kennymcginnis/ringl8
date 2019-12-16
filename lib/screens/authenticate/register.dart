@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ringl8/components/InputTextField.dart';
+import 'package:ringl8/components/input_text_field.dart';
 import 'package:ringl8/components/loading.dart';
 import 'package:ringl8/components/validators.dart';
+import 'package:ringl8/models/user.dart';
 import 'package:ringl8/services/auth.dart';
+import 'package:ringl8/services/user.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -20,6 +22,8 @@ class _RegisterState extends State<Register> {
 
   String email = '';
   String password = '';
+  String firstName = '';
+  String lastName = '';
   String error = '';
 
   @override
@@ -38,7 +42,7 @@ class _RegisterState extends State<Register> {
               })
         ],
       ),
-      body: Container(
+      body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
         child: Form(
             key: _formKey,
@@ -46,7 +50,22 @@ class _RegisterState extends State<Register> {
               children: <Widget>[
                 SizedBox(height: 20.0),
                 InputTextField(
-                  hintText: 'Email',
+                  icon: Icons.person,
+                  keyboardType: TextInputType.emailAddress,
+                  labelText: 'First Name',
+                  onChanged: (value) => setState(() => firstName = value),
+                  validator: (value) =>
+                      Validators.validateString(value, 'first name'),
+                ),
+                InputTextField(
+                  icon: Icons.person,
+                  keyboardType: TextInputType.emailAddress,
+                  labelText: 'Last Name',
+                  onChanged: (value) => setState(() => lastName = value),
+                  validator: (value) =>
+                      Validators.validateString(value, 'last name'),
+                ),
+                InputTextField(
                   icon: Icons.mail_outline,
                   keyboardType: TextInputType.emailAddress,
                   labelText: 'Email',
@@ -54,7 +73,6 @@ class _RegisterState extends State<Register> {
                   validator: Validators.validateEmail,
                 ),
                 InputTextField(
-                  hintText: 'Password',
                   icon: Icons.lock_outline,
                   labelText: 'Password',
                   obscureText: true,
@@ -67,16 +85,17 @@ class _RegisterState extends State<Register> {
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
                         setState(() => loading = true);
-                        dynamic result = await _authService
+                        User user = await _authService
                             .createUserWithEmailAndPassword(email, password);
-                        if (result == null) {
+                        if (user == null) {
                           setState(() {
                             loading = false;
                             error = 'There was an error registering $email';
                           });
                         } else {
-                          print('registered');
-                          print(result.uid);
+                          user.firstName = firstName;
+                          user.lastName = lastName;
+                          await UserService(uid: user.uid).updateUser(user);
                         }
                       }
                     }),

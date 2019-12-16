@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ringl8/components/InputTextField.dart';
+import 'package:ringl8/components/input_text_field.dart';
 import 'package:ringl8/components/loading.dart';
 import 'package:ringl8/components/validators.dart';
 import 'package:ringl8/services/auth.dart';
@@ -46,7 +46,6 @@ class _SignInState extends State<SignIn> {
               children: <Widget>[
                 SizedBox(height: 20.0),
                 InputTextField(
-                  hintText: 'Email',
                   icon: Icons.mail_outline,
                   keyboardType: TextInputType.emailAddress,
                   labelText: 'Email',
@@ -54,7 +53,6 @@ class _SignInState extends State<SignIn> {
                   validator: Validators.validateEmail,
                 ),
                 InputTextField(
-                  hintText: 'Password',
                   icon: Icons.lock_outline,
                   labelText: 'Password',
                   obscureText: true,

@@ -1,4 +1,8 @@
 class Validators {
+  static String validateString(String value, String field) {
+    return value.trim().length == 0 ? '$field is required' : null;
+  }
+
   static String validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';

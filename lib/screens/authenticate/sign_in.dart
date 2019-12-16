@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ringl8/components/InputTextField.dart';
+import 'package:ringl8/components/loading.dart';
 import 'package:ringl8/components/validators.dart';
 import 'package:ringl8/services/auth.dart';
 
@@ -15,6 +16,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   String email = '';
   String password = '';
@@ -22,6 +24,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    if (loading) return Loading();
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -42,32 +45,35 @@ class _SignInState extends State<SignIn> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20.0),
-                new Container(
-                    child: InputTextField(
-                        hintText: 'user@domain.com',
-                        icon: Icons.mail_outline,
-                        keyboardType: TextInputType.emailAddress,
-                        labelText: 'Email',
-                        onChanged: (value) => setState(() => email = value),
-                        validator: Validators.validateEmail)),
-                new Container(
-                    child: InputTextField(
-                        hintText: 'P@\$\$W0rd',
-                        icon: Icons.lock_outline,
-                        labelText: 'Password',
-                        obscureText: true,
-                        onChanged: (value) => setState(() => password = value),
-                        validator: Validators.validatePassword)),
+                InputTextField(
+                  hintText: 'Email',
+                  icon: Icons.mail_outline,
+                  keyboardType: TextInputType.emailAddress,
+                  labelText: 'Email',
+                  onChanged: (value) => setState(() => email = value),
+                  validator: Validators.validateEmail,
+                ),
+                InputTextField(
+                  hintText: 'Password',
+                  icon: Icons.lock_outline,
+                  labelText: 'Password',
+                  obscureText: true,
+                  onChanged: (value) => setState(() => password = value),
+                  validator: Validators.validatePassword,
+                ),
                 SizedBox(height: 20.0),
                 RaisedButton(
-                    child: Text('Register'),
+                    child: Text('Sign In'),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
+                        setState(() => loading = true);
                         dynamic result = await _authService
                             .signInWithEmailAndPassword(email, password);
                         if (result == null) {
-                          setState(() => error =
-                              'Could not sign in with those credentials');
+                          setState(() {
+                            loading = false;
+                            error = 'Could not sign in with those credentials';
+                          });
                         } else {
                           print('signed in');
                           print(result.uid);

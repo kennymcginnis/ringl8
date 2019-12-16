@@ -15,7 +15,7 @@ class InputTextField extends StatelessWidget {
   final Function _validator;
 
   static Color _dColor = Color.fromRGBO(255, 255, 255, 0.4);
-  static Color _dTextFieldColor = const Color.fromRGBO(0, 0, 0, 0.7);
+  static Color _dTextFieldColor = Color.fromRGBO(0, 0, 0, 0.7);
 
   static TextStyle _dTextStyle = new TextStyle(
       color: _dColor, fontSize: 16.0, fontWeight: FontWeight.normal);
@@ -52,7 +52,7 @@ class InputTextField extends StatelessWidget {
         margin: new EdgeInsets.only(bottom: _bottomMargin),
         child: new DecoratedBox(
           decoration: new BoxDecoration(
-              borderRadius: new BorderRadius.all(new Radius.circular(30.0)),
+//              borderRadius: new BorderRadius.all(new Radius.circular(30.0)),
               color: _textFieldColor),
           child: new TextFormField(
             keyboardType: _keyboardType,
@@ -63,7 +63,7 @@ class InputTextField extends StatelessWidget {
             decoration: new InputDecoration(
                 hintText: _hintText,
                 hintStyle: _hintStyle,
-                icon: new Icon(
+                prefixIcon: new Icon(
 //                hideDivider: true,
                   _icon,
                   color: _iconColor,

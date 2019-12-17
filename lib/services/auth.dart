@@ -5,7 +5,8 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Stream<User> get user {
-    return _auth.onAuthStateChanged.map((user) => User.fromFirebase(user));
+    return _auth.onAuthStateChanged
+        .map((user) => user != null ? User.fromFirebase(user) : null);
   }
 
   Future signInAnon() async {

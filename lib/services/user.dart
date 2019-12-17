@@ -20,17 +20,12 @@ class UserService {
   }
 
   List<User> _userListFromSnapshot(QuerySnapshot querySnapshot) {
-    return querySnapshot.documents.map((user) {
-      print(user);
-      var json = jsonDecode(jsonEncode(user.data));
-      print(json);
-      return User.fromJson(json);
-    }).toList();
+    return querySnapshot.documents
+        .map((user) => User.fromJson(jsonDecode(jsonEncode(user.data))))
+        .toList();
   }
 
   Stream<List<User>> get users {
-    var snapshots = userCollection.snapshots();
-    print(snapshots);
-    return snapshots.map(_userListFromSnapshot);
+    return userCollection.snapshots().map(_userListFromSnapshot);
   }
 }

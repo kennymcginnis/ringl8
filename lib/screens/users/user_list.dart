@@ -13,7 +13,7 @@ class _UserListState extends State<UserList> {
   @override
   Widget build(BuildContext context) {
     final users = Provider.of<List<User>>(context);
-    if (users.length == 0) return Loading();
+    if (users == null || users.isEmpty) return Loading();
     return ListView.builder(
         itemCount: users.length, itemBuilder: (context, index) {
           return UserTile(user: users[index]);

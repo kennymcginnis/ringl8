@@ -34,4 +34,6 @@ class Styles {
   static Color _hexToColor(String code) {
     return Color(int.parse(code.substring(0, 6), radix: 16) + 0xFF000000);
   }
+
+  static final facebook_icon = IconData(0xea94, fontFamily: 'icon');
 }

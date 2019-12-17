@@ -19,10 +19,16 @@ class UserService {
     });
   }
 
+  User _userFromSnapshot(DocumentSnapshot documentSnapshot) {
+    return User.fromJson(jsonDecode(jsonEncode(documentSnapshot.data)));
+  }
+
   List<User> _userListFromSnapshot(QuerySnapshot querySnapshot) {
-    return querySnapshot.documents
-        .map((user) => User.fromJson(jsonDecode(jsonEncode(user.data))))
-        .toList();
+    return querySnapshot.documents.map(_userFromSnapshot).toList();
+  }
+
+  Stream<User> get user {
+    return userCollection.document(uid).snapshots().map(_userFromSnapshot);
   }
 
   Stream<List<User>> get users {

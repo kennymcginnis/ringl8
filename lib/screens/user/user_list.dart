@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ringl8/components/loading.dart';
 import 'package:ringl8/models/user.dart';
-import 'package:ringl8/screens/users/user_tile.dart';
+import 'package:ringl8/screens/user/user_tile.dart';
 
 class UserList extends StatefulWidget {
   @override
@@ -12,11 +11,12 @@ class UserList extends StatefulWidget {
 class _UserListState extends State<UserList> {
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<List<User>>(context);
-    if (users == null || users.isEmpty) return Loading();
+    final users = Provider.of<List<User>>(context) ?? [];
     return ListView.builder(
-        itemCount: users.length, itemBuilder: (context, index) {
-          return UserTile(user: users[index]);
-    });
+      itemCount: users.length,
+      itemBuilder: (context, index) {
+        return UserTile(user: users[index]);
+      },
+    );
   }
 }

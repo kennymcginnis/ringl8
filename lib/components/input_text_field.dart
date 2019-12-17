@@ -6,6 +6,7 @@ class InputTextField extends StatelessWidget {
   final String _hintText;
   final IconData _icon;
   final Color _iconColor;
+  final String _initialValue;
   final TextInputType _keyboardType;
   final String _labelText;
   final bool _obscureText;
@@ -26,6 +27,7 @@ class InputTextField extends StatelessWidget {
     hintText,
     icon,
     iconColor,
+    initialValue,
     keyboardType,
     labelText,
     obscureText,
@@ -38,6 +40,7 @@ class InputTextField extends StatelessWidget {
         _hintText = hintText, // ?? labelText,
         _icon = icon,
         _iconColor = iconColor ?? _dColor,
+        _initialValue = initialValue,
         _keyboardType = keyboardType,
         _labelText = labelText,
         _obscureText = obscureText ?? false,
@@ -55,6 +58,7 @@ class InputTextField extends StatelessWidget {
 //              borderRadius: new BorderRadius.all(new Radius.circular(30.0)),
               color: _textFieldColor),
           child: new TextFormField(
+            initialValue: _initialValue,
             keyboardType: _keyboardType,
             obscureText: _obscureText,
             onChanged: _onChanged,

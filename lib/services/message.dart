@@ -11,6 +11,10 @@ class MessageService {
   final CollectionReference messageCollection =
       Firestore.instance.collection('messages');
 
+  Future sendMessage(Message message) async {
+    return await messageCollection.add(message);
+  }
+
   List<Message> _messageListFromSnapshot(QuerySnapshot querySnapshot) {
     return querySnapshot.documents.map((message) {
       print(message);

@@ -35,74 +35,77 @@ class _RegisterState extends State<Register> {
         title: Text('Register'),
         actions: <Widget>[
           FlatButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('Sign in'),
-              onPressed: () {
-                widget.toggleView();
-              })
+            icon: Icon(Icons.person),
+            label: Text('Sign in'),
+            onPressed: () {
+              widget.toggleView();
+            },
+          )
         ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
         child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20.0),
-                InputTextField(
-                  icon: Icons.person,
-                  keyboardType: TextInputType.emailAddress,
-                  labelText: 'First Name',
-                  onChanged: (value) => setState(() => firstName = value),
-                  validator: (value) =>
-                      Validators.validateString(value, 'first name'),
-                ),
-                InputTextField(
-                  icon: Icons.person,
-                  keyboardType: TextInputType.emailAddress,
-                  labelText: 'Last Name',
-                  onChanged: (value) => setState(() => lastName = value),
-                  validator: (value) =>
-                      Validators.validateString(value, 'last name'),
-                ),
-                InputTextField(
-                  icon: Icons.mail_outline,
-                  keyboardType: TextInputType.emailAddress,
-                  labelText: 'Email',
-                  onChanged: (value) => setState(() => email = value),
-                  validator: Validators.validateEmail,
-                ),
-                InputTextField(
-                  icon: Icons.lock_outline,
-                  labelText: 'Password',
-                  obscureText: true,
-                  onChanged: (value) => setState(() => password = value),
-                  validator: Validators.validatePassword,
-                ),
-                SizedBox(height: 20.0),
-                RaisedButton(
-                    child: Text('Register'),
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        setState(() => loading = true);
-                        User user = await _authService
-                            .createUserWithEmailAndPassword(email, password);
-                        if (user == null) {
-                          setState(() {
-                            loading = false;
-                            error = 'There was an error registering $email';
-                          });
-                        } else {
-                          user.firstName = firstName;
-                          user.lastName = lastName;
-                          await UserService(uid: user.uid).updateUser(user);
-                        }
-                      }
-                    }),
-                SizedBox(height: 12.0),
-                Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0))
-              ],
-            )),
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 20.0),
+              InputTextField(
+                icon: Icons.person,
+                labelText: 'First Name',
+                onChanged: (value) => setState(() => firstName = value),
+                validator: (value) =>
+                    Validators.validateString(value, 'first name'),
+              ),
+              InputTextField(
+                icon: Icons.person,
+                labelText: 'Last Name',
+                onChanged: (value) => setState(() => lastName = value),
+                validator: (value) =>
+                    Validators.validateString(value, 'last name'),
+              ),
+              InputTextField(
+                icon: Icons.mail_outline,
+                keyboardType: TextInputType.emailAddress,
+                labelText: 'Email',
+                onChanged: (value) => setState(() => email = value),
+                validator: Validators.validateEmail,
+              ),
+              InputTextField(
+                icon: Icons.lock_outline,
+                labelText: 'Password',
+                obscureText: true,
+                onChanged: (value) => setState(() => password = value),
+                validator: Validators.validatePassword,
+              ),
+              SizedBox(height: 20.0),
+              RaisedButton(
+                child: Text('Register'),
+                onPressed: () async {
+                  if (_formKey.currentState.validate()) {
+                    setState(() => loading = true);
+                    User user = await _authService
+                        .createUserWithEmailAndPassword(email, password);
+                    if (user == null) {
+                      setState(() {
+                        loading = false;
+                        error = 'There was an error registering $email';
+                      });
+                    } else {
+                      await UserService(uid: user.uid).updateUser(User.clone(
+                        user,
+                        firstName: firstName,
+                        lastName: lastName,
+                      ));
+                    }
+                  }
+                },
+              ),
+              SizedBox(height: 12.0),
+              Text(error, style: TextStyle(color: Colors.red, fontSize: 14.0))
+            ],
+          ),
+        ),
       ),
     );
   }

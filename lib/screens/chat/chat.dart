@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
-//import 'package:flutter_chat_app/ChatMessageListItem.dart';
 
 final analytics = new FirebaseAnalytics();
 final auth = FirebaseAuth.instance;
@@ -33,22 +32,7 @@ class ChatScreenState extends State<ChatScreen> {
         body: new Container(
           child: new Column(
             children: <Widget>[
-              new Flexible(
-                child: new FirebaseAnimatedList(
-                  query: reference,
-                  padding: const EdgeInsets.all(8.0),
-                  reverse: true,
-                  sort: (a, b) => b.key.compareTo(a.key),
-                  //comparing timestamp of messages to check which one would appear first
-                  itemBuilder: (_, DataSnapshot messageSnapshot,
-                      Animation<double> animation) {
-                    return new ChatMessageListItem(
-                      messageSnapshot: messageSnapshot,
-                      animation: animation,
-                    );
-                  },
-                ),
-              ),
+              Expanded(child: Container()),
               new Divider(height: 1.0),
               new Container(
                 decoration:
@@ -137,10 +121,10 @@ class ChatScreenState extends State<ChatScreen> {
   void _sendMessage({String messageText, String imageUrl}) {
     reference.push().set({
       'text': messageText,
-      'email': googleSignIn.currentUser.email,
-      'imageUrl': imageUrl,
-      'senderName': googleSignIn.currentUser.displayName,
-      'senderPhotoUrl': googleSignIn.currentUser.photoUrl,
+//      'email': googleSignIn.currentUser.email,
+//      'imageUrl': imageUrl,
+//      'senderName': googleSignIn.currentUser.displayName,
+//      'senderPhotoUrl': googleSignIn.currentUser.photoUrl,
     });
 
     analytics.logEvent(name: 'send_message');

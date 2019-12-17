@@ -19,18 +19,19 @@ class UserService {
     });
   }
 
+  User _userFromSnapshot(DocumentSnapshot documentSnapshot) {
+    return User.fromJson(jsonDecode(jsonEncode(documentSnapshot.data)));
+  }
+
   List<User> _userListFromSnapshot(QuerySnapshot querySnapshot) {
-    return querySnapshot.documents.map((user) {
-      print(user);
-      var json = jsonDecode(jsonEncode(user.data));
-      print(json);
-      return User.fromJson(json);
-    }).toList();
+    return querySnapshot.documents.map(_userFromSnapshot).toList();
+  }
+
+  Stream<User> get user {
+    return userCollection.document(uid).snapshots().map(_userFromSnapshot);
   }
 
   Stream<List<User>> get users {
-    var snapshots = userCollection.snapshots();
-    print(snapshots);
-    return snapshots.map(_userListFromSnapshot);
+    return userCollection.snapshots().map(_userListFromSnapshot);
   }
 }

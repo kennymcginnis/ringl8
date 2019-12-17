@@ -15,6 +15,7 @@ class UserTile extends StatelessWidget {
         child: ListTile(
           leading: CircleAvatar(
             radius: 25.0,
+//            backgroundImage: AssetImage('assets/running-blue-transparent.png'),
           ),
           title: Text('${user.firstName} ${user.lastName}'),
           subtitle: Text(user.email),

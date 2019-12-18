@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ringl8/screens/drawer/drawers.dart';
+import 'package:ringl8/screens/home/index.dart';
 import 'package:ringl8/screens/login/login.dart';
 
 class Routes {
@@ -7,17 +7,17 @@ class Routes {
     runApp(new MaterialApp(
       title: "Dribbble Animation App",
       debugShowCheckedModeBanner: false,
-      home: new Login(),
+      home: new LoginScreen(),
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
           case '/login':
             return new MyCustomRoute(
-              builder: (_) => new Login(),
+              builder: (_) => new LoginScreen(),
               settings: settings,
             );
           case '/home':
             return new MyCustomRoute(
-              builder: (_) => new Drawers(),
+              builder: (_) => new HomeScreen(),
               settings: settings,
             );
           default:

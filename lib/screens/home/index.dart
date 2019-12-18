@@ -1,23 +1,21 @@
-import 'dart:async';
-
-import 'package:flutter/animation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
+import 'styles.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/animation.dart';
+import 'dart:async';
+import '../../Components/ListViewContainer.dart';
+import '../../Components/AddButton.dart';
+import '../../Components/HomeTopView.dart';
+import '../../Components/FadeContainer.dart';
+import 'homeAnimation.dart';
 import 'package:intl/intl.dart';
-import 'package:ringl8/components/AddButton.dart';
-import 'package:ringl8/components/Calender.dart';
-import 'package:ringl8/components/FadeContainer.dart';
-import 'package:ringl8/components/HomeTopView.dart';
-import 'package:ringl8/components/ListViewContainer.dart';
-import 'package:ringl8/screens/home/homeAnimation.dart';
-import 'package:ringl8/screens/home/styles.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key}) : super(key: key);
+  const HomeScreen({Key key}) : super(key: key);
 
   @override
-  HomeScreenState createState() => HomeScreenState();
+  HomeScreenState createState() => new HomeScreenState();
 }
 
 class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
@@ -30,7 +28,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Animation<Alignment> buttonSwingAnimation;
   Animation<EdgeInsets> listSlidePosition;
   Animation<Color> fadeScreenAnimation;
-  var animateStatus = false;
+  var animateStatus = 0;
   List<String> months = [
     "January",
     "February",
@@ -45,12 +43,11 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     "November",
     "December"
   ];
-  String month = DateFormat.MMMM().format(
-    DateTime.now(),
+  String month = new DateFormat.MMMM().format(
+    new DateTime.now(),
   );
-  int index = DateTime.now().month;
-
-  void _selectForward() {
+  int index = new DateTime.now().month;
+  void _selectforward() {
     if (index < 12)
       setState(() {
         ++index;
@@ -58,7 +55,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       });
   }
 
-  void _selectBackward() {
+  void _selectbackward() {
     if (index > 1)
       setState(() {
         --index;
@@ -70,24 +67,27 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _screenController = AnimationController(duration: Duration(milliseconds: 2000), vsync: this);
-    _buttonController = AnimationController(duration: Duration(milliseconds: 1500), vsync: this);
+    _screenController = new AnimationController(
+        duration: new Duration(milliseconds: 2000), vsync: this);
+    _buttonController = new AnimationController(
+        duration: new Duration(milliseconds: 1500), vsync: this);
 
-    fadeScreenAnimation = ColorTween(
-      begin: Colors.blue,
-      end: Colors.blue,
-    ).animate(
-      CurvedAnimation(
+    fadeScreenAnimation = new ColorTween(
+      begin: const Color.fromRGBO(247, 64, 106, 1.0),
+      end: const Color.fromRGBO(247, 64, 106, 0.0),
+    )
+        .animate(
+      new CurvedAnimation(
         parent: _screenController,
         curve: Curves.ease,
       ),
     );
-    containerGrowAnimation = CurvedAnimation(
+    containerGrowAnimation = new CurvedAnimation(
       parent: _screenController,
       curve: Curves.easeIn,
     );
 
-    buttonGrowAnimation = CurvedAnimation(
+    buttonGrowAnimation = new CurvedAnimation(
       parent: _screenController,
       curve: Curves.easeOut,
     );
@@ -96,13 +96,14 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     });
     containerGrowAnimation.addStatusListener((AnimationStatus status) {});
 
-    listTileWidth = Tween<double>(
+    listTileWidth = new Tween<double>(
       begin: 1000.0,
       end: 600.0,
-    ).animate(
-      CurvedAnimation(
+    )
+        .animate(
+      new CurvedAnimation(
         parent: _screenController,
-        curve: Interval(
+        curve: new Interval(
           0.225,
           0.600,
           curve: Curves.bounceIn,
@@ -110,39 +111,42 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
     );
 
-    listSlideAnimation = AlignmentTween(
+    listSlideAnimation = new AlignmentTween(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-    ).animate(
-      CurvedAnimation(
+    )
+        .animate(
+      new CurvedAnimation(
         parent: _screenController,
-        curve: Interval(
+        curve: new Interval(
           0.325,
           0.700,
           curve: Curves.ease,
         ),
       ),
     );
-    buttonSwingAnimation = AlignmentTween(
+    buttonSwingAnimation = new AlignmentTween(
       begin: Alignment.topCenter,
       end: Alignment.bottomRight,
-    ).animate(
-      CurvedAnimation(
+    )
+        .animate(
+      new CurvedAnimation(
         parent: _screenController,
-        curve: Interval(
+        curve: new Interval(
           0.225,
           0.600,
           curve: Curves.ease,
         ),
       ),
     );
-    listSlidePosition = EdgeInsetsTween(
-      begin: EdgeInsets.only(bottom: 16.0),
-      end: EdgeInsets.only(bottom: 80.0),
-    ).animate(
-      CurvedAnimation(
+    listSlidePosition = new EdgeInsetsTween(
+      begin: const EdgeInsets.only(bottom: 16.0),
+      end: const EdgeInsets.only(bottom: 80.0),
+    )
+        .animate(
+      new CurvedAnimation(
         parent: _screenController,
-        curve: Interval(
+        curve: new Interval(
           0.325,
           0.800,
           curve: Curves.ease,
@@ -170,61 +174,59 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     timeDilation = 0.3;
     Size screenSize = MediaQuery.of(context).size;
 
-    return (WillPopScope(
+    return (new WillPopScope(
       onWillPop: () async {
         return true;
       },
-      child: Scaffold(
-        body: Container(
-//          width: screenSize.width,
-//          height: screenSize.height,
-          child: Stack(
+      child: new Scaffold(
+        body: new Container(
+          width: screenSize.width,
+          height: screenSize.height,
+          child: new Stack(
             //alignment: buttonSwingAnimation.value,
             alignment: Alignment.bottomRight,
             children: <Widget>[
-              ListView(
+              new ListView(
                 shrinkWrap: _screenController.value < 1 ? false : true,
-                padding: EdgeInsets.all(0.0),
+                padding: const EdgeInsets.all(0.0),
                 children: <Widget>[
-                  HomeTopView(
+                  new ImageBackground(
                     backgroundImage: backgroundImage,
                     containerGrowAnimation: containerGrowAnimation,
                     profileImage: profileImage,
                     month: month,
-                    selectBackward: _selectBackward,
-                    selectForward: _selectForward,
+                    selectbackward: _selectbackward,
+                    selectforward: _selectforward,
                   ),
-                  Calender(),
-                  ListViewContent(
+                  //new Calender(),
+                  new ListViewContent(
                     listSlideAnimation: listSlideAnimation,
                     listSlidePosition: listSlidePosition,
                     listTileWidth: listTileWidth,
                   )
                 ],
               ),
-              FadeBox(
+              new FadeBox(
                 fadeScreenAnimation: fadeScreenAnimation,
                 containerGrowAnimation: containerGrowAnimation,
               ),
-              if (animateStatus)
-                StaggerAnimation(buttonController: _buttonController.view)
-              else
-                Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: InkWell(
-                    splashColor: Colors.white,
-                    highlightColor: Colors.white,
-                    onTap: () {
-                      setState(() {
-                        animateStatus = true;
-                      });
-                      _playAnimation();
-                    },
-                    child: AddButton(
-                      buttonGrowAnimation: buttonGrowAnimation,
-                    ),
-                  ),
-                )
+              animateStatus == 0
+                  ? new Padding(
+                      padding: new EdgeInsets.all(20.0),
+                      child: new InkWell(
+                          splashColor: Colors.white,
+                          highlightColor: Colors.white,
+                          onTap: () {
+                            setState(() {
+                              animateStatus = 1;
+                            });
+                            _playAnimation();
+                          },
+                          child: new AddButton(
+                            buttonGrowAnimation: buttonGrowAnimation,
+                          )))
+                  : new StaggerAnimation(
+                      buttonController: _buttonController.view),
             ],
           ),
         ),

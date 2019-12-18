@@ -133,10 +133,10 @@ class _BottomDrawerState extends State<BottomDrawer>
 
   void _animate() {
     if (Navigator.of(context).canPop()) Navigator.of(context).pop();
-    if (!isOpened)
-      _animationController.forward();
-    else
+    if (isOpened)
       _animationController.reverse();
+    else
+      _animationController.forward();
     isOpened = !isOpened;
   }
 }

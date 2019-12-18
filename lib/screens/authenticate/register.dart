@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ringl8/components/input_text_field.dart';
-import 'package:ringl8/components/loading.dart';
-import 'package:ringl8/components/validators.dart';
+import 'package:ringl8/components/InputTextField.dart';
+import 'package:ringl8/components/Loading.dart';
+import 'package:ringl8/components/Validators.dart';
 import 'package:ringl8/models/user.dart';
 import 'package:ringl8/services/auth.dart';
 import 'package:ringl8/services/user.dart';

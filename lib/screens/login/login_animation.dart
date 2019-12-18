@@ -1,43 +1,41 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
 
 class StaggerAnimation extends StatelessWidget {
   StaggerAnimation({Key key, this.buttonController})
-      : buttonSqueezeanimation = new Tween(
+      : buttonSqueezeAnimation = Tween(
           begin: 320.0,
           end: 70.0,
-        )
-            .animate(
-          new CurvedAnimation(
+        ).animate(
+          CurvedAnimation(
             parent: buttonController,
-            curve: new Interval(
+            curve: Interval(
               0.0,
               0.150,
             ),
           ),
         ),
-        buttomZoomOut = new Tween(
+        buttonZoomOut = Tween(
           begin: 70.0,
           end: 1000.0,
-        )
-            .animate(
-          new CurvedAnimation(
+        ).animate(
+          CurvedAnimation(
             parent: buttonController,
-            curve: new Interval(
+            curve: Interval(
               0.550,
               0.999,
               curve: Curves.bounceOut,
             ),
           ),
         ),
-        containerCircleAnimation = new EdgeInsetsTween(
-          begin: const EdgeInsets.only(bottom: 50.0),
-          end: const EdgeInsets.only(bottom: 0.0),
-        )
-            .animate(
-          new CurvedAnimation(
+        containerCircleAnimation = EdgeInsetsTween(
+          begin: EdgeInsets.only(bottom: 50.0),
+          end: EdgeInsets.only(bottom: 0.0),
+        ).animate(
+          CurvedAnimation(
             parent: buttonController,
-            curve: new Interval(
+            curve: Interval(
               0.500,
               0.800,
               curve: Curves.ease,
@@ -48,8 +46,8 @@ class StaggerAnimation extends StatelessWidget {
 
   final AnimationController buttonController;
   final Animation<EdgeInsets> containerCircleAnimation;
-  final Animation buttonSqueezeanimation;
-  final Animation buttomZoomOut;
+  final Animation buttonSqueezeAnimation;
+  final Animation buttonZoomOut;
 
   Future<Null> _playAnimation() async {
     try {
@@ -59,56 +57,52 @@ class StaggerAnimation extends StatelessWidget {
   }
 
   Widget _buildAnimation(BuildContext context, Widget child) {
-    return new Padding(
-      padding: buttomZoomOut.value == 70
-          ? const EdgeInsets.only(bottom: 50.0)
+    return Padding(
+      padding: buttonZoomOut.value == 70
+          ? EdgeInsets.only(bottom: 50.0)
           : containerCircleAnimation.value,
-      child: new InkWell(
+      child: InkWell(
           onTap: () {
             _playAnimation();
           },
-          child: new Hero(
+          child: Hero(
             tag: "fade",
-            child: buttomZoomOut.value <= 300
-                ? new Container(
-                    width: buttomZoomOut.value == 70
-                        ? buttonSqueezeanimation.value
-                        : buttomZoomOut.value,
-                    height:
-                        buttomZoomOut.value == 70 ? 60.0 : buttomZoomOut.value,
+            child: buttonZoomOut.value <= 300
+                ? Container(
+                    width: buttonZoomOut.value == 70
+                        ? buttonSqueezeAnimation.value
+                        : buttonZoomOut.value,
+                    height: buttonZoomOut.value == 70 ? 60.0 : buttonZoomOut.value,
                     alignment: FractionalOffset.center,
-                    decoration: new BoxDecoration(
-                      color: const Color.fromRGBO(247, 64, 106, 1.0),
-                      borderRadius: buttomZoomOut.value < 400
-                          ? new BorderRadius.all(const Radius.circular(30.0))
-                          : new BorderRadius.all(const Radius.circular(0.0)),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: buttonZoomOut.value < 400
+                          ? BorderRadius.all(Radius.circular(30.0))
+                          : BorderRadius.all(Radius.circular(0.0)),
                     ),
-                    child: buttonSqueezeanimation.value > 75.0
-                        ? new Text(
+                    child: buttonSqueezeAnimation.value > 75.0
+                        ? Text(
                             "Sign In",
-                            style: new TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
                               fontWeight: FontWeight.w300,
                               letterSpacing: 0.3,
                             ),
                           )
-                        : buttomZoomOut.value < 300.0
-                            ? new CircularProgressIndicator(
+                        : buttonZoomOut.value < 300.0
+                            ? CircularProgressIndicator(
                                 value: null,
                                 strokeWidth: 1.0,
-                                valueColor: new AlwaysStoppedAnimation<Color>(
-                                    Colors.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                               )
                             : null)
-                : new Container(
-                    width: buttomZoomOut.value,
-                    height: buttomZoomOut.value,
-                    decoration: new BoxDecoration(
-                      shape: buttomZoomOut.value < 500
-                          ? BoxShape.circle
-                          : BoxShape.rectangle,
-                      color: const Color.fromRGBO(247, 64, 106, 1.0),
+                : Container(
+                    width: buttonZoomOut.value,
+                    height: buttonZoomOut.value,
+                    decoration: BoxDecoration(
+                      shape: buttonZoomOut.value < 500 ? BoxShape.circle : BoxShape.rectangle,
+                      color: Colors.blue,
                     ),
                   ),
           )),
@@ -122,7 +116,7 @@ class StaggerAnimation extends StatelessWidget {
         Navigator.pushNamed(context, "/home");
       }
     });
-    return new AnimatedBuilder(
+    return AnimatedBuilder(
       builder: _buildAnimation,
       animation: buttonController,
     );

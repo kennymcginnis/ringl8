@@ -22,9 +22,9 @@ class Styles {
   );
 
   static final textStyle = new TextStyle(
-      color: const Color.fromRGBO(0, 0, 0, 0.9),
-      fontSize: 16.0,
-      fontWeight: FontWeight.normal
+    color: const Color.fromRGBO(0, 0, 0, 0.9),
+    fontSize: 16.0,
+    fontWeight: FontWeight.normal,
   );
 
   static final appTheme = new ThemeData(
@@ -37,7 +37,6 @@ class Styles {
 
   static final facebook_icon = IconData(0xea94, fontFamily: 'icon');
 }
-
 
 DecorationImage backgroundImage = new DecorationImage(
   image: new ExactAssetImage('assets/home.jpeg'),

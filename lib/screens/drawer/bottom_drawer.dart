@@ -9,8 +9,7 @@ class BottomDrawer extends StatefulWidget {
   _BottomDrawerState createState() => _BottomDrawerState();
 }
 
-class _BottomDrawerState extends State<BottomDrawer>
-    with SingleTickerProviderStateMixin {
+class _BottomDrawerState extends State<BottomDrawer> with SingleTickerProviderStateMixin {
   bool isOpened = false;
   AnimationController _animationController;
   Animation<Color> _buttonColor;
@@ -29,13 +28,11 @@ class _BottomDrawerState extends State<BottomDrawer>
       //statusBarBrightness: Brightness.dark,
     ));
 
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 500))
-          ..addListener(() {
-            setState(() {});
-          });
-    _animateIcon =
-        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500))
+      ..addListener(() {
+        setState(() {});
+      });
+    _animateIcon = Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
     _buttonColor = ColorTween(
       begin: Colors.black45,
       end: Colors.red,

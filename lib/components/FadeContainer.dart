@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class FadeBox extends StatelessWidget {
   final Animation<double> containerGrowAnimation;
   final Animation<Color> fadeScreenAnimation;
+
   FadeBox({this.containerGrowAnimation, this.fadeScreenAnimation});
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;

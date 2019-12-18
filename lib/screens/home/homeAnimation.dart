@@ -6,15 +6,13 @@ class StaggerAnimation extends StatelessWidget {
       : buttonZoomOutAnimation = new Tween(
           begin: 60.0,
           end: 1000.0,
-        )
-            .animate(
+        ).animate(
           new CurvedAnimation(parent: buttonController, curve: Curves.easeOut),
         ),
         buttonBottomtoCenterAnimation = new AlignmentTween(
           begin: Alignment.bottomRight,
           end: Alignment.center,
-        )
-            .animate(
+        ).animate(
           new CurvedAnimation(
             parent: buttonController,
             curve: new Interval(
@@ -34,9 +32,8 @@ class StaggerAnimation extends StatelessWidget {
     timeDilation = 0.4;
 
     return (new Padding(
-        padding: buttonZoomOutAnimation.value < 400
-            ? new EdgeInsets.all(20.0)
-            : new EdgeInsets.all(0.0),
+        padding:
+            buttonZoomOutAnimation.value < 400 ? new EdgeInsets.all(20.0) : new EdgeInsets.all(0.0),
         child: new Container(
             alignment: buttonBottomtoCenterAnimation.value,
             child: new InkWell(
@@ -45,15 +42,12 @@ class StaggerAnimation extends StatelessWidget {
                 height: buttonZoomOutAnimation.value,
                 alignment: buttonBottomtoCenterAnimation.value,
                 decoration: new BoxDecoration(
-                    color: const Color.fromRGBO(247, 64, 106, 1.0),
-                    shape: buttonZoomOutAnimation.value < 400
-                        ? BoxShape.circle
-                        : BoxShape.rectangle),
+                    color: Colors.blue,
+                    shape:
+                        buttonZoomOutAnimation.value < 400 ? BoxShape.circle : BoxShape.rectangle),
                 child: new Icon(
                   Icons.add,
-                  size: buttonZoomOutAnimation.value < 50
-                      ? buttonZoomOutAnimation.value
-                      : 0.0,
+                  size: buttonZoomOutAnimation.value < 50 ? buttonZoomOutAnimation.value : 0.0,
                   color: Colors.white,
                 ),
               ),

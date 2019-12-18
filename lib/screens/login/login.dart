@@ -14,29 +14,30 @@ import 'package:ringl8/services/auth.dart';
 import 'login_animation.dart';
 import 'styles.dart';
 
-class LoginScreen extends StatefulWidget {
-  LoginScreen({Key key}) : super(key: key);
+class Login extends StatefulWidget {
+  Login({Key key}) : super(key: key);
 
   @override
-  LoginScreenState createState() => LoginScreenState();
+  LoginState createState() => LoginState();
 }
 
-class LoginScreenState extends State<LoginScreen>
-    with TickerProviderStateMixin {
+class LoginState extends State<Login> with TickerProviderStateMixin {
   final AuthService _authService = AuthService();
   AnimationController _loginButtonController;
-  var animationStatus = 0;
+  var animationStatus = false;
   final _formKey = GlobalKey<FormState>();
 
-  String email = '';
-  String password = '';
+  String email = 'kenneth.j.mcginnis@gmail.com';
+  String password = 'Millennia@9';
   String error = '';
 
   @override
   void initState() {
     super.initState();
     _loginButtonController = AnimationController(
-        duration: Duration(milliseconds: 3000), vsync: this);
+      duration: Duration(milliseconds: 3000),
+      vsync: this,
+    );
   }
 
   @override
@@ -63,8 +64,7 @@ class LoginScreenState extends State<LoginScreen>
                 child: Text('No'),
               ),
               FlatButton(
-                onPressed: () =>
-                    Navigator.pushReplacementNamed(context, "/home"),
+                onPressed: () => Navigator.pushReplacementNamed(context, "/home"),
                 child: Text('Yes'),
               ),
             ],
@@ -97,7 +97,6 @@ class LoginScreenState extends State<LoginScreen>
               ),
             ),
             child: ListView(
-              padding: EdgeInsets.fromLTRB(0.0, 150.0, 0.0, 0.0),
               children: [
                 Stack(
                   alignment: AlignmentDirectional.bottomCenter,
@@ -109,27 +108,26 @@ class LoginScreenState extends State<LoginScreen>
                         SignUp(),
                       ],
                     ),
-                    if (animationStatus == 0)
+                    if (animationStatus)
+                      StaggerAnimation(
+                        buttonController: _loginButtonController.view,
+                      )
+                    else
                       Padding(
                         padding: EdgeInsets.only(bottom: 50.0),
                         child: InkWell(
-//                          onTap: () {
-//                            setState(() => animationStatus = 1);
-//                            _playAnimation();
-//                          },
                           onTap: () async {
                             if (_formKey.currentState.validate()) {
-                              setState(() => animationStatus = 1);
-                              _playAnimation();
-                              dynamic result = await _authService
-                                  .signInWithEmailAndPassword(email, password);
+                              setState(() => animationStatus = true);
+                              dynamic result =
+                                  await _authService.signInWithEmailAndPassword(email, password);
                               if (result == null) {
                                 setState(() {
-                                  animationStatus = 0;
-                                  error =
-                                      'Could not sign in with those credentials';
+                                  animationStatus = false;
+                                  error = 'Could not sign in with those credentials';
                                 });
                               } else {
+                                _playAnimation();
                                 print('signed in');
                                 print(result.uid);
                               }
@@ -138,10 +136,6 @@ class LoginScreenState extends State<LoginScreen>
                           child: SignInButton(),
                         ),
                       )
-                    else
-                      StaggerAnimation(
-                        buttonController: _loginButtonController.view,
-                      ),
                   ],
                 ),
               ],
@@ -162,9 +156,10 @@ class LoginScreenState extends State<LoginScreen>
             key: _formKey,
             child: Column(
               children: <Widget>[
-                SizedBox(height: 20.0),
+                SizedBox(height: 120.0),
                 InputTextField(
                   icon: Icons.mail_outline,
+                  initialValue: email,
                   keyboardType: TextInputType.emailAddress,
                   labelText: 'Email',
                   onChanged: (value) => setState(() => email = value),
@@ -172,6 +167,7 @@ class LoginScreenState extends State<LoginScreen>
                 ),
                 InputTextField(
                   icon: Icons.lock_outline,
+                  initialValue: password,
                   labelText: 'Password',
                   obscureText: true,
                   onChanged: (value) => setState(() => password = value),

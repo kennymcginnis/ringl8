@@ -1,39 +1,38 @@
 import 'package:flutter/material.dart';
 
 class MonthView extends StatelessWidget {
-  final VoidCallback selectbackward;
-  final VoidCallback selectforward;
+  final VoidCallback selectBackward;
+  final VoidCallback selectForward;
   final String month;
-  MonthView({this.selectbackward, this.selectforward, this.month});
+
+  MonthView({this.selectBackward, this.selectForward, this.month});
+
   @override
   Widget build(BuildContext context) {
-    return (new Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        new IconButton(
-          icon: new Icon(
+        IconButton(
+          icon: Icon(
             Icons.arrow_back_ios,
             color: Colors.white,
           ),
-          onPressed: selectbackward,
+          onPressed: selectBackward,
         ),
-        new Text(
+        Text(
           month.toUpperCase(),
           textAlign: TextAlign.center,
-          style: new TextStyle(
-              fontSize: 18.0,
-              letterSpacing: 1.2,
-              fontWeight: FontWeight.w300,
-              color: Colors.white),
+          style: TextStyle(
+              fontSize: 18.0, letterSpacing: 1.2, fontWeight: FontWeight.w300, color: Colors.white),
         ),
-        new IconButton(
-          icon: new Icon(
+        IconButton(
+          icon: Icon(
             Icons.arrow_forward_ios,
             color: Colors.white,
           ),
-          onPressed: selectforward,
+          onPressed: selectForward,
         ),
       ],
-    ));
+    );
   }
 }

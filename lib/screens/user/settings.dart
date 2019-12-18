@@ -40,8 +40,7 @@ class _SettingsFormState extends State<SettingsForm> {
                 initialValue: _currentUser.firstName,
                 labelText: 'First Name',
                 onChanged: (value) => setState(() => _currentFirstName = value),
-                validator: (value) =>
-                    Validators.validateString(value, 'first name'),
+                validator: (value) => Validators.validateString(value, 'first name'),
               ),
               SizedBox(height: 10.0),
               InputTextField(
@@ -49,8 +48,7 @@ class _SettingsFormState extends State<SettingsForm> {
                 initialValue: _currentUser.lastName,
                 labelText: 'Last Name',
                 onChanged: (value) => setState(() => _currentLastName = value),
-                validator: (value) =>
-                    Validators.validateString(value, 'last name'),
+                validator: (value) => Validators.validateString(value, 'last name'),
               ),
               SizedBox(height: 10.0),
               RaisedButton(

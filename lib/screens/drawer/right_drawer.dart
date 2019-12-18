@@ -46,8 +46,7 @@ class RightDrawer extends StatelessWidget {
                               ),
                               Text(
                                 "   Guest",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600, height: 1.2),
+                                style: TextStyle(fontWeight: FontWeight.w600, height: 1.2),
                               ),
                             ],
                           ),

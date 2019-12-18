@@ -8,8 +8,7 @@ class UserService {
 
   UserService({this.uid});
 
-  final CollectionReference userCollection =
-      Firestore.instance.collection('users');
+  final CollectionReference userCollection = Firestore.instance.collection('users');
 
   Future updateUser(User user) async {
     return await userCollection.document(uid).setData({

@@ -15,8 +15,7 @@ class Drawers extends StatefulWidget {
 }
 
 class _DrawersState extends State<Drawers> with SingleTickerProviderStateMixin {
-  final GlobalKey<InnerDrawerState> _innerDrawerKey =
-      GlobalKey<InnerDrawerState>();
+  final GlobalKey<InnerDrawerState> _innerDrawerKey = GlobalKey<InnerDrawerState>();
 
   InnerDrawerDirection _direction = InnerDrawerDirection.start;
   double _offset = 0.85;

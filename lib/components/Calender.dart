@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'CalenderCell.dart';
+import 'package:ringl8/components/CalenderCell.dart';
 
 class Calender extends StatelessWidget {
   final EdgeInsets margin;
   final List<String> week = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   final List arrayDay = [];
+
   Calender({this.margin});
 
-  int totaldays(int month) {
+  int totalDays(int month) {
     if (month == 2)
       return (28);
     else if (month == 4 || month == 6 || month == 9 || month == 11)
@@ -19,33 +20,37 @@ class Calender extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int element = new DateTime.now().day - new DateTime.now().weekday;
-    int totalDay = totaldays(new DateTime.now().month);
+    int totalDay = totalDays(new DateTime.now().month);
     for (var i = 0; i < 7; i++) {
       if (element > totalDay) element = 1;
       arrayDay.add(element);
       element++;
     }
     var i = -1;
-    return (new Container(
+    return Container(
       margin: margin,
       alignment: Alignment.center,
-      padding: new EdgeInsets.only(top: 20.0),
-      decoration: new BoxDecoration(
+      padding: EdgeInsets.only(top: 20.0),
+      decoration: BoxDecoration(
         color: Colors.white,
-        border: new Border(
-          bottom: new BorderSide(
-              width: 1.0, color: const Color.fromRGBO(204, 204, 204, 1.0)),
+        border: Border(
+          bottom: BorderSide(
+            width: 1.0,
+            color: Color.fromRGBO(204, 204, 204, 1.0),
+          ),
         ),
       ),
-      child: new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: week.map((String week) {
-            ++i;
-            return new CalenderCell(
-                week: week,
-                day: arrayDay[i].toString(),
-                today: arrayDay[i] != new DateTime.now().day ? false : true);
-          }).toList()),
-    ));
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: week.map((String week) {
+          ++i;
+          return CalenderCell(
+            week: week,
+            day: arrayDay[i].toString(),
+            today: arrayDay[i] != new DateTime.now().day ? false : true,
+          );
+        }).toList(),
+      ),
+    );
   }
 }

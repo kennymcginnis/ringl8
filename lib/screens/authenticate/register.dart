@@ -54,15 +54,13 @@ class _RegisterState extends State<Register> {
                 icon: Icons.person,
                 labelText: 'First Name',
                 onChanged: (value) => setState(() => firstName = value),
-                validator: (value) =>
-                    Validators.validateString(value, 'first name'),
+                validator: (value) => Validators.validateString(value, 'first name'),
               ),
               InputTextField(
                 icon: Icons.person,
                 labelText: 'Last Name',
                 onChanged: (value) => setState(() => lastName = value),
-                validator: (value) =>
-                    Validators.validateString(value, 'last name'),
+                validator: (value) => Validators.validateString(value, 'last name'),
               ),
               InputTextField(
                 icon: Icons.mail_outline,
@@ -84,8 +82,7 @@ class _RegisterState extends State<Register> {
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
                     setState(() => loading = true);
-                    User user = await _authService
-                        .createUserWithEmailAndPassword(email, password);
+                    User user = await _authService.createUserWithEmailAndPassword(email, password);
                     if (user == null) {
                       setState(() {
                         loading = false;

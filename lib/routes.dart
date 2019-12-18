@@ -7,12 +7,12 @@ class Routes {
     runApp(new MaterialApp(
       title: "Dribbble Animation App",
       debugShowCheckedModeBanner: false,
-      home: new LoginScreen(),
+      home: new Login(),
       onGenerateRoute: (RouteSettings settings) {
         switch (settings.name) {
           case '/login':
             return new MyCustomRoute(
-              builder: (_) => new LoginScreen(),
+              builder: (_) => new Login(),
               settings: settings,
             );
           case '/home':

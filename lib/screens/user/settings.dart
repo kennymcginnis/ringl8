@@ -19,10 +19,9 @@ class _SettingsFormState extends State<SettingsForm> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
-
+    final currentUser = Provider.of<User>(context);
     return StreamBuilder<User>(
-      stream: UserService(uid: user.uid).user,
+      stream: UserService(uid: currentUser.uid).user,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Loading();
         User _currentUser = snapshot.data;
@@ -58,7 +57,7 @@ class _SettingsFormState extends State<SettingsForm> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    await UserService(uid: user.uid).updateUser(User.clone(
+                    await UserService(uid: currentUser.uid).updateUser(User.clone(
                       _currentUser,
                       firstName: _currentFirstName,
                       lastName: _currentLastName,

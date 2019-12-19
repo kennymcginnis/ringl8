@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:property_change_notifier/property_change_notifier.dart';
+import 'package:ringl8/models/app_state.dart';
 
 class LeftDrawer extends StatelessWidget {
   final double _dragUpdate;
@@ -10,6 +12,13 @@ class LeftDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appState = PropertyChangeProvider.of<AppState>(context, listen: false).value;
+
+    void switchScreen(String screen) {
+      if (Navigator.of(context).canPop()) Navigator.of(context).pop();
+      appState.screen = screen;
+    }
+
     return Material(
       child: Stack(
         children: <Widget>[
@@ -63,9 +72,9 @@ class LeftDrawer extends StatelessWidget {
                         padding: EdgeInsets.all(10),
                       ),
                       ListTile(
-                        onTap: () => print("Dashboard"),
+                        onTap: () => switchScreen('users'),
                         title: Text(
-                          "Dashboard",
+                          "User List",
                           style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                         leading: Icon(
@@ -75,8 +84,9 @@ class LeftDrawer extends StatelessWidget {
                         ),
                       ),
                       ListTile(
+                        onTap: () => switchScreen('group'),
                         title: Text(
-                          "Nametag",
+                          "Group Status",
                           style: TextStyle(fontSize: 14),
                         ),
                         leading: Icon(
@@ -85,8 +95,9 @@ class LeftDrawer extends StatelessWidget {
                         ),
                       ),
                       ListTile(
+                        onTap: () => switchScreen('chat'),
                         title: Text(
-                          "Favorite",
+                          "Chat",
                           style: TextStyle(fontSize: 14),
                         ),
                         leading: Icon(
@@ -133,7 +144,7 @@ class LeftDrawer extends StatelessWidget {
                           color: Colors.grey,
                         ),
                         Text(
-                          " LogOut",
+                          " Log Out",
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey,

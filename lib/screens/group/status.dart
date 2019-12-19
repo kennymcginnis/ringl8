@@ -1,26 +1,22 @@
-import 'dart:async';
-
 import 'package:flutter/animation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:intl/intl.dart';
-import 'package:ringl8/components/AddButton.dart';
 import 'package:ringl8/components/Calender.dart';
 import 'package:ringl8/components/FadeContainer.dart';
-import 'package:ringl8/components/HomeTopView.dart';
-import 'package:ringl8/components/ListViewContainer.dart';
-import 'package:ringl8/screens/home/homeAnimation.dart';
-import 'package:ringl8/screens/home/styles.dart';
+import 'package:ringl8/screens/group/status_list.dart';
+import 'package:ringl8/screens/group/styles.dart';
+import 'package:ringl8/screens/group/top_view.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key}) : super(key: key);
+class GroupStatus extends StatefulWidget {
+  GroupStatus({Key key}) : super(key: key);
 
   @override
-  HomeScreenState createState() => HomeScreenState();
+  GroupStatusState createState() => GroupStatusState();
 }
 
-class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class GroupStatusState extends State<GroupStatus> with TickerProviderStateMixin {
   Animation<double> containerGrowAnimation;
   AnimationController _screenController;
   AnimationController _buttonController;
@@ -30,7 +26,8 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Animation<Alignment> buttonSwingAnimation;
   Animation<EdgeInsets> listSlidePosition;
   Animation<Color> fadeScreenAnimation;
-  var animateStatus = 0;
+
+//  var animateStatus = false;
   List<String> months = [
     "January",
     "February",
@@ -159,76 +156,45 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  Future<Null> _playAnimation() async {
-    try {
-      await _buttonController.forward();
-    } on TickerCanceled {}
-  }
-
   @override
   Widget build(BuildContext context) {
     timeDilation = 0.3;
     Size screenSize = MediaQuery.of(context).size;
 
-    return (WillPopScope(
+    return WillPopScope(
       onWillPop: () async {
         return true;
       },
-      child: Scaffold(
-        body: Container(
-          width: screenSize.width,
-          height: screenSize.height,
-          child: Stack(
-            //alignment: buttonSwingAnimation.value,
-            alignment: Alignment.bottomRight,
+      child: Stack(
+        //alignment: buttonSwingAnimation.value,
+        alignment: Alignment.bottomRight,
+        children: <Widget>[
+          ListView(
+            shrinkWrap: _screenController.value < 1 ? false : true,
+            padding: EdgeInsets.all(0.0),
             children: <Widget>[
-              ListView(
-                shrinkWrap: _screenController.value < 1 ? false : true,
-                padding: EdgeInsets.all(0.0),
-                children: <Widget>[
-                  HomeTopView(
-                    backgroundImage: backgroundImage,
-                    containerGrowAnimation: containerGrowAnimation,
-                    profileImage: profileImage,
-                    month: month,
-                    selectBackward: _selectBackward,
-                    selectForward: _selectForward,
-                  ),
-                  Calender(),
-                  ListViewContent(
-                    listSlideAnimation: listSlideAnimation,
-                    listSlidePosition: listSlidePosition,
-                    listTileWidth: listTileWidth,
-                  )
-                ],
-              ),
-              FadeBox(
-                fadeScreenAnimation: fadeScreenAnimation,
+              GroupTopView(
+                backgroundImage: backgroundImage,
                 containerGrowAnimation: containerGrowAnimation,
+                profileImage: profileImage,
+                month: month,
+                selectBackward: _selectBackward,
+                selectForward: _selectForward,
               ),
-              if (animateStatus == 0)
-                Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: InkWell(
-                    splashColor: Colors.white,
-                    highlightColor: Colors.white,
-                    onTap: () {
-                      setState(() {
-                        animateStatus = 1;
-                      });
-                      _playAnimation();
-                    },
-                    child: AddButton(
-                      buttonGrowAnimation: buttonGrowAnimation,
-                    ),
-                  ),
-                )
-              else
-                StaggerAnimation(buttonController: _buttonController.view),
+              Calender(),
+              GroupStatusList(
+                listSlideAnimation: listSlideAnimation,
+                listSlidePosition: listSlidePosition,
+                listTileWidth: listTileWidth,
+              )
             ],
           ),
-        ),
+          FadeBox(
+            fadeScreenAnimation: fadeScreenAnimation,
+            containerGrowAnimation: containerGrowAnimation,
+          ),
+        ],
       ),
-    ));
+    );
   }
 }

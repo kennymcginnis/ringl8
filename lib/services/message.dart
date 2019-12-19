@@ -1,19 +1,10 @@
-import 'dart:convert';
+import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart' as prefix0;
 import 'package:ringl8/models/message.dart';
 
 class MessageService {
-
-  MessageService();
-
-  final CollectionReference messageCollection =
-      Firestore.instance.collection('messages');
-
-//  Future sendMessage(Map<String, dynamic> message) async {
-//    return await messageCollection.add(message);
-//  }
+  final CollectionReference messageCollection = Firestore.instance.collection('messages');
 
   Future sendMessage(Message message) async {
     return await messageCollection.document(message.uid).setData({
@@ -33,7 +24,7 @@ class MessageService {
           ? null
           : DateTime.parse(documentSnapshot.data['timestamp'] as String),
       recipientUID: documentSnapshot.data['recipientUID'] as String,
-    );;
+    );
   }
 
   List<Message> _messageListFromSnapshot(QuerySnapshot querySnapshot) {
@@ -41,14 +32,23 @@ class MessageService {
   }
 
   Query messagesByRecipient(String recipientUID) {
-    return Firestore.instance.collection('messages').where('recipientUID', isEqualTo: recipientUID).orderBy('timestamp', descending: true);
-//        .equalTo(recipientUID);
+    return messageCollection
+        .where('recipientUID', isEqualTo: recipientUID)
+        .orderBy('timestamp', descending: true);
   }
-  
+
+  Stream<List<Message>> messageStreamByRecipient(String recipientUID) {
+    return messageCollection
+        .where('recipientUID', isEqualTo: recipientUID)
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .map(_messageListFromSnapshot);
+  }
+
   Stream<List<Message>> get messages {
     return messageCollection.snapshots().map(_messageListFromSnapshot);
   }
-//
+
 //  List<Message> _messageListFromSnapshot(QuerySnapshot querySnapshot) {
 //    return querySnapshot.documents.map((message) {
 //      print(message);

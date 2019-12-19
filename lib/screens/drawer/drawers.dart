@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
+import 'package:ringl8/listeners/screen.dart';
 import 'package:ringl8/screens/drawer/left_drawer.dart';
 import 'package:ringl8/screens/drawer/right_drawer.dart';
-import 'package:ringl8/screens/home/index.dart';
 
 class Drawers extends StatefulWidget {
   Drawers({Key key}) : super(key: key);
@@ -69,19 +69,7 @@ class _DrawersState extends State<Drawers> with SingleTickerProviderStateMixin {
               style: TextStyle(color: Colors.grey[100]),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
-                child: HomeScreen(),
-//                Column(
-//                  crossAxisAlignment: CrossAxisAlignment.center,
-//                  mainAxisAlignment: MainAxisAlignment.start,
-//                  children: <Widget>[
-//                    Row(
-//                      mainAxisAlignment: MainAxisAlignment.center,
-//                      children: <Widget>[
-//                        UserList(),
-//                      ],
-//                    ),
-//                  ],
-//                ),
+                child: ScreenListener(),
               ),
             ),
           ),

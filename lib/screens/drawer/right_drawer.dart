@@ -3,7 +3,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
-import 'package:ringl8/theme/styles.dart';
+import 'package:property_change_notifier/property_change_notifier.dart';
+import 'package:ringl8/models/app_state.dart';
 
 class RightDrawer extends StatelessWidget {
   final GlobalKey<InnerDrawerState> _innerDrawerKey;
@@ -12,14 +13,22 @@ class RightDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appState = PropertyChangeProvider.of<AppState>(context, listen: false).value;
+
+    void switchScreen(String screen) {
+      if (Navigator.of(context).canPop()) Navigator.of(context).pop();
+      appState.screen = screen;
+    }
+
     return Material(
       child: SafeArea(
         //top: false,
         child: Container(
           decoration: BoxDecoration(
             border: Border(
-                left: BorderSide(width: 1, color: Colors.grey[200]),
-                right: BorderSide(width: 1, color: Colors.grey[200])),
+              left: BorderSide(width: 1, color: Colors.grey[200]),
+              right: BorderSide(width: 1, color: Colors.grey[200]),
+            ),
           ),
           child: Stack(
             children: <Widget>[
@@ -85,13 +94,6 @@ class RightDrawer extends StatelessWidget {
                     title: Text("Close Friends"),
                     leading: Icon(Icons.list),
                   ),
-                  ListTile(
-                    title: Text("Open Facebook"),
-                    leading: Icon(
-                      Styles.facebook_icon,
-                      size: 18,
-                    ),
-                  ),
                   Container(
                     alignment: Alignment.bottomLeft,
                     margin: EdgeInsets.only(top: 50),
@@ -108,13 +110,16 @@ class RightDrawer extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Icon(
-                          Icons.settings,
-                          size: 18,
-                        ),
-                        Text(
-                          "  Settings",
-                          style: TextStyle(fontSize: 16),
+                        FlatButton(
+                          padding: EdgeInsets.all(0.0),
+                          onPressed: () => switchScreen('settings'),
+                          child: Row(
+                            // Replace with a Row for horizontal icon + text
+                            children: <Widget>[
+                              Icon(Icons.settings),
+                              Text("    Settings"),
+                            ],
+                          ),
                         ),
                       ],
                     ),

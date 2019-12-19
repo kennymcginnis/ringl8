@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ringl8/components/MonthView.dart';
 import 'package:ringl8/components/ProfileNotification.dart';
 
-class HomeTopView extends StatelessWidget {
+class GroupTopView extends StatelessWidget {
   final DecorationImage backgroundImage;
   final DecorationImage profileImage;
   final VoidCallback selectBackward;
@@ -10,7 +10,7 @@ class HomeTopView extends StatelessWidget {
   final String month;
   final Animation<double> containerGrowAnimation;
 
-  HomeTopView({
+  GroupTopView({
     this.backgroundImage,
     this.containerGrowAnimation,
     this.month,

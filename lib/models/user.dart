@@ -20,6 +20,10 @@ class User {
     return User(uid: firebaseUser.uid, email: firebaseUser.email);
   }
 
+  String fullName() => '${this.firstName} ${this.lastName}';
+
+  String initials() => '${this.firstName.substring(0, 1)}${this.lastName.substring(0, 1)}';
+
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
   factory User.clone(

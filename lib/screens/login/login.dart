@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/services.dart';
 import 'package:ringl8/components/InputTextField.dart';
-import 'package:ringl8/components/SignInButton.dart';
+import 'package:ringl8/screens/login/sign_in_button.dart';
 import 'package:ringl8/components/SignUpLink.dart';
 import 'package:ringl8/components/Validators.dart';
 import 'package:ringl8/services/auth.dart';

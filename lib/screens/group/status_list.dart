@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:ringl8/components/ListItem.dart';
-import 'package:ringl8/screens/home/data.dart';
+import 'package:ringl8/screens/group/data.dart';
 
-class ListViewContent extends StatelessWidget {
+class GroupStatusList extends StatelessWidget {
   final Animation<double> listTileWidth;
   final Animation<Alignment> listSlideAnimation;
   final Animation<EdgeInsets> listSlidePosition;
 
-  ListViewContent({
+  GroupStatusList({
     this.listSlideAnimation,
     this.listSlidePosition,
     this.listTileWidth,

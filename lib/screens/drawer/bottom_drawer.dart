@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ringl8/screens/chat/chat.dart';
+import 'package:property_change_notifier/property_change_notifier.dart';
+import 'package:ringl8/models/app_state.dart';
 
 class BottomDrawer extends StatefulWidget {
   BottomDrawer({Key key}) : super(key: key);
@@ -38,22 +39,14 @@ class _BottomDrawerState extends State<BottomDrawer> with SingleTickerProviderSt
       end: Colors.red,
     ).animate(CurvedAnimation(
       parent: _animationController,
-      curve: Interval(
-        0.00,
-        1.00,
-        curve: Curves.linear,
-      ),
+      curve: Interval(0.00, 1.00, curve: Curves.linear),
     ));
     _translateButton = Tween<double>(
       begin: _fabHeight,
       end: -14.0,
     ).animate(CurvedAnimation(
       parent: _animationController,
-      curve: Interval(
-        0.0,
-        0.75,
-        curve: _curve,
-      ),
+      curve: Interval(0.0, 0.75, curve: _curve),
     ));
   }
 
@@ -65,6 +58,7 @@ class _BottomDrawerState extends State<BottomDrawer> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    final appState = PropertyChangeProvider.of<AppState>(context, listen: false).value;
     return Container(
       padding: EdgeInsets.all(20),
       alignment: Alignment.bottomRight,
@@ -72,17 +66,14 @@ class _BottomDrawerState extends State<BottomDrawer> with SingleTickerProviderSt
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Transform(
-            transform: Matrix4.translationValues(
-              0.0,
-              _translateButton.value * 2,
-              0.0,
+            transform: Matrix4.translationValues(0.0, _translateButton.value * 2, 0.0),
+            child: _item(
+              title: 'Chat',
+              onPressed: () {
+                if (Navigator.of(context).canPop()) Navigator.of(context).pop();
+                appState.screen = 'chat';
+              },
             ),
-            child: _item(title: "Chat", onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ChatScreen()),
-              );
-            },),
           ),
           _toggle(),
         ],
@@ -101,13 +92,7 @@ class _BottomDrawerState extends State<BottomDrawer> with SingleTickerProviderSt
         elevation: val,
         onPressed: onPressed,
         tooltip: 'Apri',
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 11,
-            color: Colors.green[300],
-          ),
-        ),
+        child: Text(title, style: TextStyle(fontSize: 11, color: Colors.green[300])),
       ),
     );
   }

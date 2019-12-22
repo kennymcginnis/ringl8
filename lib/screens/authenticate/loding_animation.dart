@@ -62,50 +62,51 @@ class StaggerAnimation extends StatelessWidget {
           ? EdgeInsets.only(bottom: 50.0)
           : containerCircleAnimation.value,
       child: InkWell(
-          onTap: () {
-            _playAnimation();
-          },
-          child: Hero(
-            tag: "fade",
-            child: buttonZoomOut.value <= 300
-                ? Container(
-                    width: buttonZoomOut.value == 70
-                        ? buttonSqueezeAnimation.value
-                        : buttonZoomOut.value,
-                    height: buttonZoomOut.value == 70 ? 60.0 : buttonZoomOut.value,
-                    alignment: FractionalOffset.center,
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: buttonZoomOut.value < 400
-                          ? BorderRadius.all(Radius.circular(30.0))
-                          : BorderRadius.all(Radius.circular(0.0)),
-                    ),
-                    child: buttonSqueezeAnimation.value > 75.0
-                        ? Text(
-                            "Sign In",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w300,
-                              letterSpacing: 0.3,
-                            ),
-                          )
-                        : buttonZoomOut.value < 300.0
-                            ? CircularProgressIndicator(
-                                value: null,
-                                strokeWidth: 1.0,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                              )
-                            : null)
-                : Container(
-                    width: buttonZoomOut.value,
-                    height: buttonZoomOut.value,
-                    decoration: BoxDecoration(
-                      shape: buttonZoomOut.value < 500 ? BoxShape.circle : BoxShape.rectangle,
-                      color: Colors.blue,
-                    ),
+        onTap: () {
+          _playAnimation();
+        },
+        child: Hero(
+          tag: "fade",
+          child: buttonZoomOut.value <= 300
+              ? Container(
+                  width: buttonZoomOut.value == 70
+                      ? buttonSqueezeAnimation.value
+                      : buttonZoomOut.value,
+                  height: buttonZoomOut.value == 70 ? 60.0 : buttonZoomOut.value,
+                  alignment: FractionalOffset.center,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: buttonZoomOut.value < 400
+                        ? BorderRadius.all(Radius.circular(30.0))
+                        : BorderRadius.all(Radius.circular(0.0)),
                   ),
-          )),
+                  child: buttonSqueezeAnimation.value > 75.0
+                      ? Text(
+                          "Sign In",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 0.3,
+                          ),
+                        )
+                      : buttonZoomOut.value < 300.0
+                          ? CircularProgressIndicator(
+                              value: null,
+                              strokeWidth: 1.0,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            )
+                          : null)
+              : Container(
+                  width: buttonZoomOut.value,
+                  height: buttonZoomOut.value,
+                  decoration: BoxDecoration(
+                    shape: buttonZoomOut.value < 500 ? BoxShape.circle : BoxShape.rectangle,
+                    color: Colors.blue,
+                  ),
+                ),
+        ),
+      ),
     );
   }
 

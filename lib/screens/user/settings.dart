@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ringl8/components/InputTextField.dart';
-import 'package:ringl8/components/Loading.dart';
-import 'package:ringl8/components/Validators.dart';
+import 'package:ringl8/components/input_text_field.dart';
+import 'package:ringl8/components/loading.dart';
+import 'package:ringl8/components/validators.dart';
 import 'package:ringl8/models/user.dart';
 import 'package:ringl8/services/user.dart';
 
@@ -29,8 +29,9 @@ class _SettingsFormState extends State<SettingsForm> {
           key: _formKey,
           child: Column(
             children: <Widget>[
+              SizedBox(height: 20.0),
               Text(
-                'Update your brew settings.',
+                'Update your user settings:',
                 style: TextStyle(fontSize: 18.0),
               ),
               SizedBox(height: 20.0),

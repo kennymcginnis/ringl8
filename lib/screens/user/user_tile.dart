@@ -14,10 +14,13 @@ class UserTile extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
           leading: CircleAvatar(
-            radius: 25.0,
-//            backgroundImage: AssetImage('assets/running-blue-transparent.png'),
+            backgroundColor: Colors.blue.shade800,
+            child: Text(
+              user.initials(),
+              style: TextStyle(color: Colors.white),
+            ),
           ),
-          title: Text('${user.firstName} ${user.lastName}'),
+          title: Text(user.fullName()),
           subtitle: Text(user.email),
         ),
       ),

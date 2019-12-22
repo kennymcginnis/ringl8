@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:ringl8/models/group.dart';
@@ -10,7 +11,7 @@ class User {
   final String firstName;
   final String lastName;
   final String email;
-  final List<Group> groups;
+  final List<String> groups;
 
   User({this.uid, this.firstName, this.lastName, this.email, this.groups});
 
@@ -18,6 +19,16 @@ class User {
 
   factory User.fromFirebase(FirebaseUser firebaseUser) {
     return User(uid: firebaseUser.uid, email: firebaseUser.email);
+  }
+
+  factory User.fromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
+    return User(
+      uid: documentSnapshot.documentID,
+      firstName: documentSnapshot.data['firstName'] as String,
+      lastName: documentSnapshot.data['lastName'] as String,
+      email: documentSnapshot.data['email'] as String,
+      groups: (documentSnapshot.data['groups'] as List)?.map((e) => e as String)?.toList(),
+    );
   }
 
   String fullName() => '${this.firstName} ${this.lastName}';

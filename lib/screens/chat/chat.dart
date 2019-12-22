@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ringl8/components/animatedList.dart';
+import 'package:ringl8/screens/chat/animated_list.dart';
 import 'package:ringl8/models/message.dart';
 import 'package:ringl8/models/user.dart';
 import 'package:ringl8/screens/chat/message_list_item.dart';

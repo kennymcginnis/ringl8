@@ -55,38 +55,39 @@ class InputTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(bottom: _bottomMargin),
-        child: TextFormField(
-          initialValue: _initialValue,
-          keyboardType: _keyboardType,
-          obscureText: _obscureText,
-          onChanged: _onChanged,
-          style: _textStyle,
-          validator: _validator,
-          decoration: InputDecoration(
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            errorStyle: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-            hintText: _hintText,
-            hintStyle: _hintStyle,
-            prefixIcon: Icon(_icon, color: _iconColor),
-            labelText: _labelText,
-            labelStyle: _labelStyle,
+      margin: EdgeInsets.only(bottom: _bottomMargin),
+      child: TextFormField(
+        initialValue: _initialValue,
+        keyboardType: _keyboardType,
+        obscureText: _obscureText,
+        onChanged: _onChanged,
+        style: _textStyle,
+        validator: _validator,
+        decoration: InputDecoration(
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.blue),
+            borderRadius: BorderRadius.circular(10.0),
           ),
-        ));
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          errorStyle: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          hintText: _hintText,
+          hintStyle: _hintStyle,
+          prefixIcon: Icon(_icon, color: _iconColor),
+          labelText: _labelText,
+          labelStyle: _labelStyle,
+        ),
+      ),
+    );
   }
 }

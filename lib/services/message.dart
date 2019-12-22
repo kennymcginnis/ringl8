@@ -7,7 +7,7 @@ class MessageService {
   final CollectionReference messageCollection = Firestore.instance.collection('messages');
 
   Future sendMessage(Message message) async {
-    return await messageCollection.document(message.uid).setData({
+    return await messageCollection.add({
       'text': message.text,
       'senderUID': message.senderUID,
       'recipientUID': message.recipientUID,
@@ -15,20 +15,10 @@ class MessageService {
     });
   }
 
-  Message _messageFromSnapshot(DocumentSnapshot documentSnapshot) {
-    return Message(
-      uid: documentSnapshot.data['uid'] as String,
-      text: documentSnapshot.data['text'] as String,
-      senderUID: documentSnapshot.data['senderUID'] as String,
-      timestamp: documentSnapshot.data['timestamp'] == null
-          ? null
-          : DateTime.parse(documentSnapshot.data['timestamp'] as String),
-      recipientUID: documentSnapshot.data['recipientUID'] as String,
-    );
-  }
-
-  List<Message> _messageListFromSnapshot(QuerySnapshot querySnapshot) {
-    return querySnapshot.documents.map(_messageFromSnapshot).toList();
+  List<Message> messageListFromSnapshot(QuerySnapshot querySnapshot) {
+    return querySnapshot.documents
+        .map((documentSnapshot) => Message.fromDocumentSnapshot(documentSnapshot))
+        .toList();
   }
 
   Query messagesByRecipient(String recipientUID) {
@@ -42,11 +32,11 @@ class MessageService {
         .where('recipientUID', isEqualTo: recipientUID)
         .orderBy('timestamp', descending: true)
         .snapshots()
-        .map(_messageListFromSnapshot);
+        .map(messageListFromSnapshot);
   }
 
   Stream<List<Message>> get messages {
-    return messageCollection.snapshots().map(_messageListFromSnapshot);
+    return messageCollection.snapshots().map(messageListFromSnapshot);
   }
 
 //  List<Message> _messageListFromSnapshot(QuerySnapshot querySnapshot) {

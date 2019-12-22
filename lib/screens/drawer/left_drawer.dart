@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:property_change_notifier/property_change_notifier.dart';
 import 'package:ringl8/models/app_state.dart';
+import 'package:ringl8/services/auth.dart';
 
 class LeftDrawer extends StatelessWidget {
   final double _dragUpdate;
+  final AuthService _auth = AuthService();
 
   LeftDrawer(this._dragUpdate);
 
@@ -106,8 +108,9 @@ class LeftDrawer extends StatelessWidget {
                         ),
                       ),
                       ListTile(
+                        onTap: () => switchScreen('calendar'),
                         title: Text(
-                          "Close Friends",
+                          "Calendar",
                           style: TextStyle(fontSize: 14),
                         ),
                         leading: Icon(
@@ -135,22 +138,25 @@ class LeftDrawer extends StatelessWidget {
                     margin: EdgeInsets.only(top: 50),
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                     width: double.maxFinite,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Icon(
-                          Icons.all_out,
-                          size: 18,
-                          color: Colors.grey,
-                        ),
-                        Text(
-                          " Log Out",
-                          style: TextStyle(
-                            fontSize: 16,
+                    child: GestureDetector(
+                      onTap: () async => await _auth.signOut(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(
+                            Icons.all_out,
+                            size: 18,
                             color: Colors.grey,
                           ),
-                        ),
-                      ],
+                          Text(
+                            " Log Out",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 )

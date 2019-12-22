@@ -1,7 +1,7 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ringl8/models/group.dart';
 import 'package:ringl8/models/user.dart';
+import 'package:ringl8/services/group.dart';
 
 class UserService {
   final CollectionReference userCollection = Firestore.instance.collection('users');
@@ -16,39 +16,46 @@ class UserService {
 
   Future updateUser(User user) async {
     return await userCollection.document(uid).setData({
-      'uid': uid,
       'email': user.email,
       'firstName': user.firstName,
       'lastName': user.lastName,
     });
   }
 
-  User _userFromSnapshot(DocumentSnapshot documentSnapshot) {
-    return User.fromJson(jsonDecode(jsonEncode(documentSnapshot.data)));
-  }
-
-  List<User> _userListFromSnapshot(QuerySnapshot querySnapshot) {
-    return querySnapshot.documents.map(_userFromSnapshot).toList();
+  List<User> userListFromSnapshot(QuerySnapshot querySnapshot) {
+    return querySnapshot.documents
+        .map((documentSnapshot) => User.fromDocumentSnapshot(documentSnapshot))
+        .toList();
   }
 
   Map<String, User> _userMapFromSnapshot(QuerySnapshot querySnapshot) {
     return Map.fromIterable(
-      querySnapshot.documents.map(_userFromSnapshot).toList(),
+      userListFromSnapshot(querySnapshot),
       key: (item) => item.uid,
       value: (item) => item,
     );
   }
 
   Stream<Map<String, User>> get userMap {
-    var map = userCollection.snapshots().map(_userMapFromSnapshot);
-    return map;
+    return userCollection.snapshots().map(_userMapFromSnapshot);
   }
 
   Stream<User> get user {
-    return userCollection.document(uid).snapshots().map(_userFromSnapshot);
+    return userCollection
+        .document(uid)
+        .snapshots()
+        .map((documentSnapshot) => User.fromDocumentSnapshot(documentSnapshot));
   }
 
   Stream<List<User>> get users {
-    return userCollection.snapshots().map(_userListFromSnapshot);
+    return userCollection.snapshots().map(userListFromSnapshot);
+  }
+
+  Stream<List<Group>> groups(User user) {
+    final CollectionReference groupCollection = Firestore.instance.collection('groups');
+    return groupCollection
+        .where('members', arrayContains: user.uid)
+        .snapshots()
+        .map(GroupService().groupListFromSnapshot);
   }
 }

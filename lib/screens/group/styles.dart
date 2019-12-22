@@ -38,8 +38,3 @@ DecorationImage avatar6 = new DecorationImage(
   image: new ExactAssetImage('assets/avatars/avatar-6.jpg'),
   fit: BoxFit.cover,
 );
-
-// DecorationImage profileImage = new DecorationImage(
-//   image: new ExactAssetImage('assets/avatars/avatar-7.gif'),
-//   fit: BoxFit.cover,
-// );

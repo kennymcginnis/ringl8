@@ -12,10 +12,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
     firstName: json['firstName'] as String,
     lastName: json['lastName'] as String,
     email: json['email'] as String,
-    groups: (json['groups'] as List)
-        ?.map(
-            (e) => e == null ? null : Group.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    groups: (json['groups'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 

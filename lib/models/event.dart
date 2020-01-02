@@ -6,18 +6,20 @@ part 'event.g.dart';
 @JsonSerializable()
 class Event {
   final String uid;
-  final String user;
+  final String userUID;
+  final String groupUID;
   final int status;
   final String dateTime;
 
-  Event({this.uid, this.user, this.status, this.dateTime});
+  Event({this.uid, this.userUID, this.groupUID, this.status, this.dateTime});
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
 
   factory Event.fromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
     return Event(
       uid: documentSnapshot.documentID,
-      user: documentSnapshot.data['user'],
+      userUID: documentSnapshot.data['userUID'],
+      groupUID: documentSnapshot.data['groupUID'],
       status: documentSnapshot.data['status'],
       dateTime: documentSnapshot.data['dateTime'],
     );

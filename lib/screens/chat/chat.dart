@@ -5,93 +5,42 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:ringl8/routes/application.dart';
 import 'package:ringl8/screens/chat/animated_list.dart';
-import 'package:ringl8/models/message.dart';
-import 'package:ringl8/models/user.dart';
 import 'package:ringl8/screens/chat/message_list_item.dart';
 import 'package:ringl8/services/message.dart';
-import 'package:ringl8/services/user.dart';
-
-final analytics = FirebaseAnalytics();
-final auth = FirebaseAuth.instance;
-var currentUser;
-var _scaffoldContext;
 
 class ChatScreen extends StatefulWidget {
+  final analytics = FirebaseAnalytics();
+  final auth = FirebaseAuth.instance;
+
   @override
-  ChatScreenState createState() {
-    return ChatScreenState();
-  }
+  ChatScreenState createState() => ChatScreenState();
 }
 
 class ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   bool _isComposingMessage = false;
-  final MessageService _messageService = MessageService();
 
   @override
   Widget build(BuildContext context) {
-    currentUser = Provider.of<User>(context);
-//    return Scaffold(
-//        body: Container(
-//          child: Column(
-//            children: <Widget>[
-//              Flexible(
-//                child: StreamBuilder<QuerySnapshot>(
-//          stream: MessageService().messagesByRecipient(123''),
-//            builder: (context, snapshot){
-//              return snapshot.hasData ? AnimatedList(
-//                  reverse: true,
-//                  padding: EdgeInsets.all(8.0),
-//                  itemBuilder: (BuildContext context, int index, Animation<double> animation) {
-//                    return ChatMessageListItem(
-//                      animation: animation,
-//                      messageSnapshot: snapshot,
-//                    );
-//                  }
-//              );
-//        )
-//              ]
-//          )
-//        )
-//    )
-
-//    return StreamBuilder<List<Message>>(
-//      stream: MessageService().messages,
-//      builder: (context, snapshot) {
-//        if (!snapshot.hasData) return Loading();
-//        return ListView(
-//          children: snapshot.data.map((document) {
-//            return ChatMessageListItem(
-//                      messageSnapshot: document,
-//                    );
-//          }).toList(),
-//        );
-//      },
-//    );
-    return StreamProvider<Map<String, User>>.value(
-      value: UserService().userMap,
-      child: Container(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(Application.currentGroup.name),
+      ),
+      body: Container(
         child: Column(
           children: <Widget>[
             Flexible(
               child: FirestoreAnimatedList(
-                query: _messageService.messagesByRecipient('123'),
+                key: ValueKey("list"),
+                query: MessageService().messagesByRecipient,
                 padding: EdgeInsets.all(8.0),
                 reverse: true,
                 //comparing timestamp of messages to check which one would appear first
-                itemBuilder: (
-                  _,
-                  DocumentSnapshot messageSnapshot,
-                  Animation<double> animation,
-                  int x,
-                ) {
-                  return MessageListItem(
-                    messageSnapshot: messageSnapshot,
-                    animation: animation,
-                  );
-                },
+                itemBuilder:
+                    (_, DocumentSnapshot messageSnapshot, Animation<double> animation, __) =>
+                        MessageListItem(messageSnapshot: messageSnapshot, animation: animation),
               ),
             ),
             Divider(height: 1.0),
@@ -99,18 +48,17 @@ class ChatScreenState extends State<ChatScreen> {
               decoration: BoxDecoration(color: Theme.of(context).cardColor),
               child: _buildTextComposer(),
             ),
-            Builder(builder: (BuildContext context) {
-              _scaffoldContext = context;
-              return Container(width: 0.0, height: 0.0);
-            })
+            Builder(builder: (BuildContext context) => Container(width: 0.0, height: 0.0))
           ],
         ),
         decoration: Theme.of(context).platform == TargetPlatform.iOS
             ? BoxDecoration(
                 border: Border(
-                    top: BorderSide(
-                color: Colors.grey[200],
-              )))
+                  top: BorderSide(
+                    color: Colors.grey[200],
+                  ),
+                ),
+              )
             : null,
       ),
     );
@@ -135,9 +83,9 @@ class ChatScreenState extends State<ChatScreen> {
   Widget _buildTextComposer() {
     return IconTheme(
       data: IconThemeData(
-        color:
-            _isComposingMessage ? Theme.of(context).accentColor : Theme.of(context).disabledColor,
-      ),
+          color: _isComposingMessage
+              ? Theme.of(context).accentColor
+              : Theme.of(context).disabledColor),
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(
@@ -146,12 +94,15 @@ class ChatScreenState extends State<ChatScreen> {
               child: TextField(
                 controller: _textEditingController,
                 onChanged: (String messageText) {
-                  setState(() {
-                    _isComposingMessage = messageText.length > 0;
-                  });
+                  setState(() => _isComposingMessage = messageText.length > 0);
                 },
                 onSubmitted: _textMessageSubmitted,
-                decoration: InputDecoration.collapsed(hintText: "Send a message"),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  hintText: "Send a message",
+                ),
               ),
             ),
             Container(
@@ -168,22 +119,12 @@ class ChatScreenState extends State<ChatScreen> {
 
   Future<Null> _textMessageSubmitted(String text) async {
     _textEditingController.clear();
-
-    setState(() {
-      _isComposingMessage = false;
-    });
-
+    setState(() => _isComposingMessage = false);
     _sendMessage(messageText: text, imageUrl: null);
   }
 
   void _sendMessage({String messageText, String imageUrl}) {
-    _messageService.sendMessage(Message(
-      text: messageText,
-      senderUID: currentUser.uid,
-      recipientUID: '123',
-      timestamp: DateTime.now(),
-    ));
-
-    analytics.logEvent(name: 'send_message');
+    MessageService().sendMessage(messageText);
+    widget.analytics.logEvent(name: 'send_message');
   }
 }

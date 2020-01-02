@@ -4,8 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:ringl8/components/loading.dart';
 import 'package:ringl8/models/user.dart';
 
-var currentUserEmail;
-
 class MessageListItem extends StatelessWidget {
   final DocumentSnapshot messageSnapshot;
   final Animation animation;
@@ -14,17 +12,17 @@ class MessageListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    User currentUser = Provider.of<User>(context);
-    Map<String, User> userMap = Provider.of<Map<String, User>>(context);
-    if (userMap.isEmpty) return Loading();
+    String _userUID = Provider.of<User>(context).uid;
+    Map<String, User> _userMap = Provider.of<Map<String, User>>(context);
+    if (_userMap.isEmpty) return Loading();
     String senderUID = messageSnapshot.data['senderUID'];
-    User sender = userMap[senderUID];
-    return new SizeTransition(
-      sizeFactor: new CurvedAnimation(parent: animation, curve: Curves.decelerate),
-      child: new Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
-        child: new Row(
-          children: currentUser.uid == senderUID
+    User sender = _userMap[senderUID];
+    return SizeTransition(
+      sizeFactor: CurvedAnimation(parent: animation, curve: Curves.decelerate),
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 10.0),
+        child: Row(
+          children: _userUID == senderUID
               ? getSentMessageLayout(sender)
               : getReceivedMessageLayout(sender),
         ),
@@ -34,26 +32,26 @@ class MessageListItem extends StatelessWidget {
 
   List<Widget> getSentMessageLayout(User sender) {
     return <Widget>[
-      new Expanded(
-        child: new Column(
+      Expanded(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            new Text(
+            Text(
               sender.fullName(),
-              style: new TextStyle(
+              style: TextStyle(
                 fontSize: 14.0,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            new Container(
+            Container(
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.blue,
                 borderRadius: BorderRadius.all(Radius.circular(30.0)),
               ),
-              margin: const EdgeInsets.only(top: 5.0),
-              child: new Text(
+              margin: EdgeInsets.only(top: 5.0),
+              child: Text(
                 messageSnapshot.data['text'],
                 style: TextStyle(
                   color: Colors.white,
@@ -64,12 +62,12 @@ class MessageListItem extends StatelessWidget {
           ],
         ),
       ),
-      new Column(
+      Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          new Container(
-            margin: const EdgeInsets.fromLTRB(5.0, 20.0, 0.0, 0.0),
-            child: new CircleAvatar(
+          Container(
+            margin: EdgeInsets.fromLTRB(5.0, 20.0, 0.0, 0.0),
+            child: CircleAvatar(
               backgroundColor: Colors.blue.shade800,
               child: Text(
                 sender.initials(),
@@ -84,12 +82,12 @@ class MessageListItem extends StatelessWidget {
 
   List<Widget> getReceivedMessageLayout(User sender) {
     return <Widget>[
-      new Column(
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Container(
-            margin: const EdgeInsets.fromLTRB(0.0, 20.0, 5.0, 0.0),
-            child: new CircleAvatar(
+          Container(
+            margin: EdgeInsets.fromLTRB(0.0, 20.0, 5.0, 0.0),
+            child: CircleAvatar(
               backgroundColor: Colors.black87,
               child: Text(
                 sender.initials(),
@@ -99,26 +97,26 @@ class MessageListItem extends StatelessWidget {
           ),
         ],
       ),
-      new Expanded(
-        child: new Column(
+      Expanded(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            new Text(
+            Text(
               sender.fullName(),
-              style: new TextStyle(
+              style: TextStyle(
                 fontSize: 14.0,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            new Container(
+            Container(
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.black54,
                 borderRadius: BorderRadius.all(Radius.circular(30.0)),
               ),
-              margin: const EdgeInsets.only(top: 5.0),
-              child: new Text(
+              margin: EdgeInsets.only(top: 5.0),
+              child: Text(
                 messageSnapshot.data['text'],
                 style: TextStyle(
                   color: Colors.white,

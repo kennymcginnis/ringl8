@@ -3,6 +3,10 @@ class Validators {
     return value.trim().length == 0 ? '    $field is required' : null;
   }
 
+  static String validateMaxLength(String value, int length, String field) {
+    return value.trim().length > length ? '    $field is required' : null;
+  }
+
   static String validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -11,12 +15,12 @@ class Validators {
   }
 
   static String validatePassword(String value) {
-//    Pattern pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-//    RegExp regex = new RegExp(pattern);
+    Pattern pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regex = new RegExp(pattern);
     if (value.isEmpty) {
       return '    Please enter password';
     } else {
-      return null; //!regex.hasMatch(value) ? '    Enter valid password' : null;
+      return !regex.hasMatch(value) ? '    Enter valid password' : null;
     }
   }
 }

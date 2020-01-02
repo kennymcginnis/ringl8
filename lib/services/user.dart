@@ -3,11 +3,10 @@ import 'package:ringl8/models/group.dart';
 import 'package:ringl8/models/user.dart';
 import 'package:ringl8/services/group.dart';
 
+import '../routes/application.dart';
+
 class UserService {
   final CollectionReference userCollection = Firestore.instance.collection('users');
-  final String uid;
-
-  UserService({this.uid});
 
   Map<String, User> userMapFromList(List<User> users) {
     return new Map<String, User>.fromIterable(users,
@@ -15,10 +14,11 @@ class UserService {
   }
 
   Future updateUser(User user) async {
-    return await userCollection.document(uid).setData({
+    return await userCollection.document(Application.currentUserUID).setData({
       'email': user.email,
       'firstName': user.firstName,
       'lastName': user.lastName,
+      'avatar': user.avatar,
     });
   }
 
@@ -42,7 +42,7 @@ class UserService {
 
   Stream<User> get user {
     return userCollection
-        .document(uid)
+        .document(Application.currentUserUID)
         .snapshots()
         .map((documentSnapshot) => User.fromDocumentSnapshot(documentSnapshot));
   }
@@ -51,11 +51,19 @@ class UserService {
     return userCollection.snapshots().map(userListFromSnapshot);
   }
 
-  Stream<List<Group>> groups(User user) {
+  Stream<List<Group>> get groups {
     final CollectionReference groupCollection = Firestore.instance.collection('groups');
     return groupCollection
-        .where('members', arrayContains: user.uid)
+        .where('members', arrayContains: Application.currentUserUID)
         .snapshots()
         .map(GroupService().groupListFromSnapshot);
+  }
+
+  Stream<List<User>> get groupMembers {
+    final CollectionReference userCollection = Firestore.instance.collection('users');
+    return userCollection
+        .where('uid', whereIn: Application.currentGroup.members)
+        .snapshots()
+        .map(UserService().userListFromSnapshot);
   }
 }

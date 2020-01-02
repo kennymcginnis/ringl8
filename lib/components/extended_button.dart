@@ -8,28 +8,17 @@ class ExtendedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 50.0),
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          width: 320.0,
-          height: 60.0,
-          alignment: FractionalOffset.center,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.all(Radius.circular(30.0)),
-          ),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-              fontWeight: FontWeight.w300,
-              letterSpacing: 0.3,
-            ),
-          ),
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: 320.0,
+        height: 60.0,
+        alignment: FractionalOffset.center,
+        decoration: BoxDecoration(
+          color: Theme.of(context).buttonColor,
+          borderRadius: BorderRadius.all(Radius.circular(30.0)),
         ),
+        child: Text(text, style: TextStyle(fontSize: 20.0)),
       ),
     );
   }

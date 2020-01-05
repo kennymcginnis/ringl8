@@ -1,27 +1,24 @@
-import 'dart:async';
-
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:ringl8/components/group_icon.dart';
 import 'package:ringl8/components/square_menu_button.dart';
-//import 'package:ringl8/hooks/useLocalStorage.dart';
+import 'package:ringl8/main.dart';
 import 'package:ringl8/models/group.dart';
+import 'package:ringl8/models/wrapper.dart';
+import 'package:ringl8/routes/app_state.dart';
 import 'package:ringl8/routes/application.dart';
 
-class HomeComponent extends HookWidget {
+class HomeComponent extends StatelessWidget {
+  final application = sl.get<AppState>();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final childRatio = (size.width / size.height) * 2.5;
-    List<Group> _currentGroups = Provider.of<List<Group>>(context) ?? [];
-
-//    ignore: close_sinks
-//    StreamController<String> groupController = useLocalStorage('currentGroup');
-
+    List<Group> _currentGroups = Provider.of<Membership>(context)?.membership ?? [];
     return Scaffold(
       appBar: AppBar(
         title: Text('RINGL8 (running late)'),
@@ -51,8 +48,8 @@ class HomeComponent extends HookWidget {
                       return GroupIcon(
                         group,
                         onTap: () {
-//                          groupController.add(group.uid);
-                          Application.currentGroupUID = group.uid;
+                          application.currentGroup = group;
+                          application.currentGroupUID = group.uid;
                           return Application.router.navigateTo(
                             context,
                             '/group',
@@ -88,14 +85,14 @@ class HomeComponent extends HookWidget {
                     navigateTo: '/calendar',
                   ),
                   SquareMenuButton(
-                    icon: Icons.inbox,
-                    text: 'Invitations',
-                    navigateTo: '/invitations',
-                  ),
-                  SquareMenuButton(
                     icon: Icons.settings,
                     text: 'Settings',
                     navigateTo: '/settings',
+                  ),
+                  SquareMenuButton(
+                    icon: Icons.exit_to_app,
+                    text: 'Log Out',
+                    navigateTo: '/logout',
                   ),
                 ],
               ),

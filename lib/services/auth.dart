@@ -1,21 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:ringl8/models/user.dart';
+import 'package:ringl8/models/auth_user.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Stream<User> get user {
-    return _auth.onAuthStateChanged.map((user) => user != null ? User.fromFirebase(user) : null);
-  }
-
-  Future signInAnon() async {
-    try {
-      AuthResult result = await _auth.signInAnonymously();
-      return User.fromFirebase(result.user);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
+  Stream<AuthUser> get user {
+    return _auth.onAuthStateChanged.map((user) {
+      return user != null ? AuthUser.fromFirebase(user) : null;
+    });
   }
 
   Future signInWithEmailAndPassword(String email, String password) async {
@@ -24,7 +16,7 @@ class AuthService {
         email: email,
         password: password,
       );
-      return User.fromFirebase(result.user);
+      return AuthUser.fromFirebase(result.user);
     } catch (e) {
       print(e.toString());
       return null;
@@ -38,7 +30,7 @@ class AuthService {
         email: email,
         password: password,
       );
-      return User.fromFirebase(result.user);
+      return AuthUser.fromFirebase(result.user);
     } catch (e) {
       print(e.toString());
       return null;

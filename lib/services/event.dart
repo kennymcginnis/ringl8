@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ringl8/main.dart';
 import 'package:ringl8/models/event.dart';
-
-import '../routes/application.dart';
+import 'package:ringl8/routes/app_state.dart';
 
 class EventService {
   final String uid;
+  final application = sl.get<AppState>();
 
   EventService({this.uid});
 
@@ -13,7 +14,7 @@ class EventService {
   Future updateEvent(Event event) async {
     return await eventCollection.document(uid).setData({
       'user': event.userUID,
-      'group': Application.currentGroupUID,
+      'group': application.currentGroupUID,
       'status': event.status,
       'dateTime': event.dateTime,
     });
@@ -25,13 +26,9 @@ class EventService {
         .toList();
   }
 
-  Stream<List<Event>> get events {
-    return eventCollection.snapshots().map(eventListFromSnapshot);
-  }
-
   Stream<List<Event>> get groupEvents {
     return eventCollection
-        .where('groupUID', isEqualTo: Application.currentGroupUID)
+        .where('groupUID', isEqualTo: application.currentGroupUID)
         .snapshots()
         .map(eventListFromSnapshot);
   }

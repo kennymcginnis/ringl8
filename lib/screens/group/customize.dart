@@ -6,8 +6,9 @@ import 'package:ringl8/components/group_icon.dart';
 import 'package:ringl8/components/input_text_field.dart';
 import 'package:ringl8/helpers/flushbar.dart';
 import 'package:ringl8/helpers/validators.dart';
+import 'package:ringl8/main.dart';
 import 'package:ringl8/models/group.dart';
-import 'package:ringl8/routes/application.dart';
+import 'package:ringl8/routes/app_state.dart';
 import 'package:ringl8/services/group.dart';
 
 class CustomizeGroup extends StatefulWidget {
@@ -17,6 +18,7 @@ class CustomizeGroup extends StatefulWidget {
 
 class _CustomizeGroupState extends State<CustomizeGroup> {
   final _formKey = GlobalKey<FormState>();
+  final application = sl.get<AppState>();
 
   String _currentName;
   String _currentInitials;
@@ -24,9 +26,9 @@ class _CustomizeGroupState extends State<CustomizeGroup> {
 
   @override
   Widget build(BuildContext context) {
-    Color initialColor = Application.currentGroup.color == null
+    Color initialColor = application.currentGroup.color == null
         ? Color(0xff443a49)
-        : Color(Application.currentGroup.color);
+        : Color(application.currentGroup.color);
 
     void changeColor(Color color) {
       setState(() {
@@ -38,7 +40,7 @@ class _CustomizeGroupState extends State<CustomizeGroup> {
       if (_formKey.currentState.validate()) {
         try {
           await GroupService().updateGroupSettings(
-            Application.currentGroup.copyWith(
+            application.currentGroup.copyWith(
               Group(
                 name: _currentName,
                 initials: _currentInitials,
@@ -46,15 +48,12 @@ class _CustomizeGroupState extends State<CustomizeGroup> {
               ),
             ),
           );
-          FlushbarHelper(context, 'success', 'User settings updated.').show();
+          FlushbarHelper(context, Status.success, 'Group customizations saved.').show();
         } catch (e) {
-          FlushbarHelper(context, 'error', e.toString()).show();
+          FlushbarHelper(context, Status.error, e.toString()).show();
         }
       }
     }
-
-    final size = MediaQuery.of(context).size;
-    final iconSize = (size.width - 60) / 3;
 
     return Scaffold(
       appBar: AppBar(
@@ -71,18 +70,25 @@ class _CustomizeGroupState extends State<CustomizeGroup> {
               // GroupIcon
               Row(
                 children: <Widget>[
-                  SizedBox(
-                    height: iconSize,
-                    width: iconSize,
-                    child: GroupIcon(
-                      Application.currentGroup.copyWith(
-                        Group(
-                          name: _currentName,
-                          initials: _currentInitials,
-                          color: _currentColor,
-                        ),
+                  GroupIcon(
+                    application.currentGroup.copyWith(
+                      Group(
+                        name: _currentName,
+                        initials: _currentInitials,
+                        color: _currentColor,
                       ),
                     ),
+                  ),
+                  SizedBox(width: 20.0),
+                  GroupIcon(
+                    application.currentGroup.copyWith(
+                      Group(
+                        name: _currentName,
+                        initials: _currentInitials,
+                        color: _currentColor,
+                      ),
+                    ),
+                    size: Size.small,
                   ),
                   SizedBox(width: 20.0),
                   InkWell(
@@ -102,7 +108,7 @@ class _CustomizeGroupState extends State<CustomizeGroup> {
                           FlatButton(
                             child: Text('Cancel'),
                             onPressed: () {
-                              setState(() => _currentColor = Application.currentGroup.color);
+                              setState(() => _currentColor = application.currentGroup.color);
                               Navigator.of(context).pop();
                             },
                           ),
@@ -130,7 +136,7 @@ class _CustomizeGroupState extends State<CustomizeGroup> {
               SizedBox(height: 30.0),
               InputTextField(
                 icon: Icons.group,
-                initialValue: Application.currentGroup.name,
+                initialValue: application.currentGroup.name,
                 labelText: 'Group Name',
                 onChanged: (value) => setState(() => _currentName = value),
                 validator: (value) => Validators.validateString(value, 'group name'),
@@ -138,7 +144,7 @@ class _CustomizeGroupState extends State<CustomizeGroup> {
               SizedBox(height: 10.0),
               InputTextField(
                 icon: Icons.group_work,
-                initialValue: Application.currentGroup.initials,
+                initialValue: application.currentGroup.initials,
                 labelText: 'Icon Initials',
 //                maxLength: 3,
                 onChanged: (value) => setState(() => _currentInitials = value),

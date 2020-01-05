@@ -1,6 +1,9 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ringl8/main.dart';
+import 'package:ringl8/models/auth_user.dart';
+import 'package:ringl8/routes/app_state.dart';
 import 'package:ringl8/routes/stream_providers.dart';
 import 'package:ringl8/screens/authenticate/auth_form.dart';
 import 'package:ringl8/screens/calendar/calendar_view.dart';
@@ -13,22 +16,16 @@ import 'package:ringl8/screens/user/groups.dart';
 import 'package:ringl8/screens/user/settings.dart';
 import 'package:ringl8/services/auth.dart';
 
-import 'application.dart';
+final application = sl.get<AppState>();
 
 var authHandler = Handler(handlerFunc: (BuildContext context, _) {
-  if (Application.currentUserUID == null) return AuthForm();
+  AuthUser _currentUser = Provider.of<AuthUser>(context);
+  if (_currentUser == null) return AuthForm();
+  application.currentUserUID = _currentUser.uid;
+  application.currentUserEmail = _currentUser.email;
   return MultiProvider(
     providers: [
-      groupsProvider(),
-    ],
-    child: HomeComponent(),
-  );
-});
-
-var homeHandler = Handler(handlerFunc: (BuildContext context, _) {
-  return MultiProvider(
-    providers: [
-      groupsProvider(),
+      membershipProvider(),
     ],
     child: HomeComponent(),
   );
@@ -50,7 +47,8 @@ var membersHandler = Handler(handlerFunc: (BuildContext context, _) {
 var groupsHandler = Handler(handlerFunc: (BuildContext context, _) {
   return MultiProvider(
     providers: [
-      groupsProvider(),
+      membershipProvider(),
+      invitationsProvider(),
     ],
     child: UsersGroups(),
   );
@@ -62,7 +60,7 @@ var chatHandler = Handler(handlerFunc: (BuildContext context, _) {
       userMapProvider(),
       userProvider(),
     ],
-    child: Material(child: ChatScreen()),
+    child: ChatScreen(),
   );
 });
 
@@ -78,10 +76,6 @@ Handler calendarHandler(showListOnly) {
   });
 }
 
-var invitationsHandler = Handler(handlerFunc: (BuildContext context, _) {
-  return Container(width: 0, height: 0); // TODO
-});
-
 var settingsHandler = Handler(handlerFunc: (BuildContext context, _) {
   return MultiProvider(
     providers: [
@@ -93,5 +87,7 @@ var settingsHandler = Handler(handlerFunc: (BuildContext context, _) {
 
 var logoutHandler = Handler(handlerFunc: (BuildContext context, _) {
   AuthService().signOut();
+  application.currentUserUID = null;
+  application.currentUserEmail = null;
   return AuthForm();
 });

@@ -26,7 +26,7 @@ class SquareMenuButton extends StatelessWidget {
             children: <Widget>[
               Icon(icon, size: 36),
               SizedBox(height: 10.0),
-              Text(text),
+              Text(text, textAlign: TextAlign.center),
             ],
           ),
           onPressed: () => Application.router.navigateTo(

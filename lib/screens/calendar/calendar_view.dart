@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:ringl8/components/loading.dart';
+import 'package:ringl8/main.dart';
 import 'package:ringl8/models/choice.dart';
 import 'package:ringl8/models/event.dart';
 import 'package:ringl8/models/user.dart';
 import 'package:ringl8/models/user_event.dart';
+import 'package:ringl8/routes/app_state.dart';
 import 'package:ringl8/screens/calendar/event_list.dart';
+import 'package:ringl8/screens/calendar/styles.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-import 'styles.dart';
 
 class CalendarView extends StatefulWidget {
   final bool showListOnly;
@@ -23,6 +24,7 @@ class CalendarView extends StatefulWidget {
 class _CalendarViewState extends State<CalendarView> with TickerProviderStateMixin {
   AnimationController _animationController;
   CalendarController _calendarController;
+  final application = sl.get<AppState>();
   final formatter = new DateFormat('yyyy-MM-dd');
 
   DateTime _selectedDay;
@@ -65,7 +67,7 @@ class _CalendarViewState extends State<CalendarView> with TickerProviderStateMix
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     _userMap = Provider.of<Map<String, User>>(context);
-    _streamedEvents = Provider.of<List<Event>>(context);
+    _streamedEvents = Provider.of<List<Event>>(context) ?? [];
     if (_userMap == null || _streamedEvents == null) return Loading();
 
     _currentEvents = _buildEventDataFromStream();
@@ -73,7 +75,8 @@ class _CalendarViewState extends State<CalendarView> with TickerProviderStateMix
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("123"),
+        title: Text(application.currentGroup.name),
+        centerTitle: true,
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,

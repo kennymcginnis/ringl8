@@ -38,14 +38,14 @@ class User {
 
   Map<String, dynamic> toJson() => _$UserToJson(this);
 
-  User copyWith(User user) {
+  User copyWith({uid, firstName, lastName, email, avatar, groups}) {
     return User(
-      uid: user.uid ?? this.uid,
-      firstName: user.firstName ?? this.firstName,
-      lastName: user.lastName ?? this.lastName,
-      email: user.email ?? this.email,
-      avatar: user.avatar ?? this.avatar,
-      groups: user.groups ?? this.groups,
+      uid: uid ?? this.uid,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      email: email ?? this.email,
+      avatar: avatar ?? this.avatar,
+      groups: groups ?? this.groups,
     );
   }
 }

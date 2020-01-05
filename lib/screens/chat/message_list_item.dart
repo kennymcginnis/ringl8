@@ -2,17 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ringl8/components/loading.dart';
+import 'package:ringl8/main.dart';
 import 'package:ringl8/models/user.dart';
+import 'package:ringl8/routes/app_state.dart';
 
 class MessageListItem extends StatelessWidget {
   final DocumentSnapshot messageSnapshot;
+  final application = sl.get<AppState>();
   final Animation animation;
 
   MessageListItem({this.messageSnapshot, this.animation});
 
   @override
   Widget build(BuildContext context) {
-    String _userUID = Provider.of<User>(context).uid;
     Map<String, User> _userMap = Provider.of<Map<String, User>>(context);
     if (_userMap.isEmpty) return Loading();
     String senderUID = messageSnapshot.data['senderUID'];
@@ -22,7 +24,7 @@ class MessageListItem extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10.0),
         child: Row(
-          children: _userUID == senderUID
+          children: application.currentUserUID == senderUID
               ? getSentMessageLayout(sender)
               : getReceivedMessageLayout(sender),
         ),

@@ -3,7 +3,6 @@ import 'package:ringl8/routes/route_handlers.dart';
 
 class Routes {
   static String root = '/';
-  static String home = '/home';
   static String today = '/today';
   static String groups = '/groups';
   static String group = '/group';
@@ -21,7 +20,6 @@ class Routes {
       return null;
     });
     router.define(root, handler: authHandler);
-    router.define(home, handler: homeHandler);
     router.define(today, handler: calendarHandler(true));
     router.define(group, handler: groupHandler);
     router.define(customize, handler: customizeHandler);
@@ -29,7 +27,6 @@ class Routes {
     router.define(groups, handler: groupsHandler);
     router.define(chat, handler: chatHandler);
     router.define(calendar, handler: calendarHandler(false));
-    router.define(invitations, handler: invitationsHandler);
     router.define(settings, handler: settingsHandler);
     router.define(logout, handler: logoutHandler);
   }

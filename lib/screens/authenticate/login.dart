@@ -20,7 +20,6 @@ class LoginForm extends StatefulWidget {
 class LoginFormState extends State<LoginForm> {
   final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
-
   bool loading = false;
   String email = 'kenneth.j.mcginnis@gmail.com';
   String password = 'Millennia@9';
@@ -34,7 +33,7 @@ class LoginFormState extends State<LoginForm> {
         email,
         password,
       );
-      Application.router.navigateTo(context, '/home', transition: TransitionType.fadeIn);
+      Application.router.navigateTo(context, '/', transition: TransitionType.fadeIn);
     }
     if (result == null) {
       setState(() {
@@ -87,7 +86,7 @@ class LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 Padding(
-                // or-divider
+                  // or-divider
                   padding: EdgeInsets.only(top: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

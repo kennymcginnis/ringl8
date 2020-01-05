@@ -16,7 +16,7 @@ class MembershipTile extends StatelessWidget {
         child: ListTile(
           onTap: () => Application.router.navigateTo(
             context,
-            '/group?uid=${group.uid}',
+            '/group',
             transition: TransitionType.fadeIn,
           ),
           leading: CircleAvatar(

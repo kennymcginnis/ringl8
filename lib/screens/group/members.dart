@@ -3,12 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:ringl8/components/extended_button.dart';
 import 'package:ringl8/components/input_text_field.dart';
-import 'package:ringl8/components/loading.dart';
 import 'package:ringl8/helpers/flushbar.dart';
 import 'package:ringl8/helpers/validators.dart';
+import 'package:ringl8/main.dart';
 import 'package:ringl8/models/choice.dart';
 import 'package:ringl8/models/user.dart';
-import 'package:ringl8/routes/application.dart';
+import 'package:ringl8/routes/app_state.dart';
 import 'package:ringl8/services/group.dart';
 
 class GroupMembers extends StatefulWidget {
@@ -18,10 +18,9 @@ class GroupMembers extends StatefulWidget {
 
 class _GroupMembersState extends State<GroupMembers> {
   final _formKey = GlobalKey<FormState>();
+  final application = sl.get<AppState>();
 
   String email = '';
-  List<User> _currentMembers;
-  List<String> _currentInvites;
 
   List<Choice> choices = <Choice>[
     Choice(title: '- Members -', icon: Icon(Icons.group)),
@@ -30,16 +29,14 @@ class _GroupMembersState extends State<GroupMembers> {
 
   @override
   Widget build(BuildContext context) {
-    _currentMembers = Provider.of<List<User>>(context);
-    if (_currentMembers == null) return Loading();
-
-    _currentInvites = Application.currentGroup.invites ?? [];
+    List<User> _currentMembers = Provider.of<List<User>>(context) ?? [];
+    List<String> _currentInvites = application.currentGroup.invites ?? [];
     return DefaultTabController(
       length: choices.length,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0.0,
-          title: Text(Application.currentGroup.name),
+          title: Text(application.currentGroup.name),
           bottom: TabBar(
             isScrollable: true,
             tabs: choices
@@ -66,11 +63,12 @@ class _GroupMembersState extends State<GroupMembers> {
                       itemCount: _currentInvites.length,
                       itemBuilder: (_, index) => _buildInviteeTile(
                         context,
+                        _currentInvites,
                         _currentInvites[index],
                       ),
                     ),
                   ),
-                  _buildInviteMemberForm(),
+                  _buildInviteMemberForm(context, _currentMembers, _currentInvites),
                 ],
               ),
             ],
@@ -93,14 +91,14 @@ class _GroupMembersState extends State<GroupMembers> {
 //            color: theme.primaryColorLight,
 //          ),
 //          onPressed: () {
-//            debugPrint('222');
+//            debugPrint('Remove member');
 //          },
 //        ),
       ),
     );
   }
 
-  Widget _buildInviteeTile(BuildContext context, String email) {
+  Widget _buildInviteeTile(BuildContext context, List<String> _currentInvites, String email) {
     return Card(
       margin: EdgeInsets.only(bottom: 12.0),
       child: ListTile(
@@ -115,9 +113,9 @@ class _GroupMembersState extends State<GroupMembers> {
             try {
               List<String> removed = _currentInvites.where((invitee) => invitee != email).toList();
               await GroupService().updateGroupInvites(removed);
-              FlushbarHelper(context, 'success', 'Invite removed for $email.').show();
+              FlushbarHelper(context, Status.success, 'Invite removed for $email.').show();
             } catch (e) {
-              FlushbarHelper(context, 'error', e.toString()).show();
+              FlushbarHelper(context, Status.error, e.toString()).show();
             }
           },
         ),
@@ -125,7 +123,11 @@ class _GroupMembersState extends State<GroupMembers> {
     );
   }
 
-  Widget _buildInviteMemberForm() {
+  Widget _buildInviteMemberForm(
+    BuildContext context,
+    List<User> _currentMembers,
+    List<String> _currentInvites,
+  ) {
     return Form(
       key: _formKey,
       child: Column(
@@ -143,9 +145,9 @@ class _GroupMembersState extends State<GroupMembers> {
               if (_formKey.currentState.validate()) {
                 bool existing = _currentMembers.where((member) => member.email == email).isNotEmpty;
                 if (existing) {
-                  FlushbarHelper(context, 'error', '$email is already a group member...').show();
+                  FlushbarHelper(context, Status.error, '$email is already a group member.').show();
                 } else if (_currentInvites.contains(email)) {
-                  FlushbarHelper(context, 'error', '$email has already been invited...').show();
+                  FlushbarHelper(context, Status.error, '$email has already been invited.').show();
                 } else {
                   try {
                     await GroupService().updateGroupInvites([
@@ -153,9 +155,9 @@ class _GroupMembersState extends State<GroupMembers> {
                       email,
                     ]);
                     setState(() => email = '');
-                    FlushbarHelper(context, 'success', 'Group invite sent to $email.').show();
+                    FlushbarHelper(context, Status.success, 'Group invite sent to $email.').show();
                   } catch (e) {
-                    FlushbarHelper(context, 'error', e.toString()).show();
+                    FlushbarHelper(context, Status.error, e.toString()).show();
                   }
                 }
               }

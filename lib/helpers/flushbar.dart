@@ -1,9 +1,11 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
+enum Status { success, error }
+
 class FlushbarHelper {
   final BuildContext context;
-  final String status;
+  final Status status;
   final String message;
 
   FlushbarHelper(this.context, this.status, this.message);
@@ -13,11 +15,11 @@ class FlushbarHelper {
 
   show() {
     switch (status) {
-      case 'success':
+      case Status.success:
         color = Colors.green;
         icon = Icons.check;
         break;
-      case 'error':
+      case Status.error:
         color = Colors.red;
         icon = Icons.info_outline;
         break;

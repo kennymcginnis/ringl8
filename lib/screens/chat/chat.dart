@@ -1,17 +1,16 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ringl8/routes/application.dart';
+import 'package:ringl8/main.dart';
+import 'package:ringl8/routes/app_state.dart';
 import 'package:ringl8/screens/chat/animated_list.dart';
 import 'package:ringl8/screens/chat/message_list_item.dart';
 import 'package:ringl8/services/message.dart';
 
 class ChatScreen extends StatefulWidget {
-  final analytics = FirebaseAnalytics();
   final auth = FirebaseAuth.instance;
 
   @override
@@ -20,46 +19,50 @@ class ChatScreen extends StatefulWidget {
 
 class ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textEditingController = TextEditingController();
+  var application = sl.get<AppState>();
   bool _isComposingMessage = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(Application.currentGroup.name),
-      ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Flexible(
-              child: FirestoreAnimatedList(
-                key: ValueKey("list"),
-                query: MessageService().messagesByRecipient,
-                padding: EdgeInsets.all(8.0),
-                reverse: true,
-                //comparing timestamp of messages to check which one would appear first
-                itemBuilder:
-                    (_, DocumentSnapshot messageSnapshot, Animation<double> animation, __) =>
-                        MessageListItem(messageSnapshot: messageSnapshot, animation: animation),
-              ),
-            ),
-            Divider(height: 1.0),
-            Container(
-              decoration: BoxDecoration(color: Theme.of(context).cardColor),
-              child: _buildTextComposer(),
-            ),
-            Builder(builder: (BuildContext context) => Container(width: 0.0, height: 0.0))
-          ],
+    return Material(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(application.currentGroup.name),
+          centerTitle: true,
         ),
-        decoration: Theme.of(context).platform == TargetPlatform.iOS
-            ? BoxDecoration(
-                border: Border(
-                  top: BorderSide(
-                    color: Colors.grey[200],
-                  ),
+        body: Container(
+          child: Column(
+            children: <Widget>[
+              Flexible(
+                child: FirestoreAnimatedList(
+                  key: ValueKey("list"),
+                  query: MessageService().messagesByRecipient,
+                  padding: EdgeInsets.all(8.0),
+                  reverse: true,
+                  //comparing timestamp of messages to check which one would appear first
+                  itemBuilder:
+                      (_, DocumentSnapshot messageSnapshot, Animation<double> animation, __) =>
+                          MessageListItem(messageSnapshot: messageSnapshot, animation: animation),
                 ),
-              )
-            : null,
+              ),
+              Divider(height: 1.0),
+              Container(
+                decoration: BoxDecoration(color: Theme.of(context).cardColor),
+                child: _buildTextComposer(),
+              ),
+              Builder(builder: (BuildContext context) => Container(width: 0.0, height: 0.0))
+            ],
+          ),
+          decoration: Theme.of(context).platform == TargetPlatform.iOS
+              ? BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Colors.grey[200],
+                    ),
+                  ),
+                )
+              : null,
+        ),
       ),
     );
   }
@@ -125,6 +128,5 @@ class ChatScreenState extends State<ChatScreen> {
 
   void _sendMessage({String messageText, String imageUrl}) {
     MessageService().sendMessage(messageText);
-    widget.analytics.logEvent(name: 'send_message');
   }
 }

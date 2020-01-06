@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:ringl8/helpers/color_helpers.dart';
 import 'package:ringl8/models/group.dart';
 
 enum Size {
@@ -20,13 +21,14 @@ class GroupIcon extends StatelessWidget {
     var isLarge = size == Size.large;
     final contentSize = MediaQuery.of(context).size;
     final iconSize = isLarge ? (contentSize.width - 60) / 3 : 50.0;
+    var color = Color(group.color ?? 0xff424242);
     return SizedBox(
       height: iconSize,
       width: iconSize,
       child: GestureDetector(
         child: Container(
           decoration: BoxDecoration(
-            color: Color(group.color ?? 0xff424242),
+            color: color,
             border: Border.all(
               color: Color(0xffffffff),
               width: 1.0,
@@ -41,7 +43,8 @@ class GroupIcon extends StatelessWidget {
             child: Center(
               child: AutoSizeText(
                 isLarge ? group.name : group.initials,
-                style: TextStyle(fontSize: isLarge ? 50 : 20),
+                style: TextStyle(fontSize: isLarge ? 50 : 20,
+                color: ColorHelpers.blackOrWhiteContrastColor(color)),
                 textAlign: TextAlign.center,
                 minFontSize: isLarge ? 18 : 8,
                 maxLines: isLarge ? 3 : 1,

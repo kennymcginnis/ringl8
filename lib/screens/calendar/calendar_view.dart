@@ -67,7 +67,7 @@ class _CalendarViewState extends State<CalendarView> with TickerProviderStateMix
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     _userMap = Provider.of<Map<String, User>>(context);
-    _streamedEvents = Provider.of<List<Event>>(context) ?? [];
+    _streamedEvents = Provider.of<List<Event>>(context);
     if (_userMap == null || _streamedEvents == null) return Loading();
 
     _currentEvents = _buildEventDataFromStream();
@@ -263,6 +263,7 @@ class _CalendarViewState extends State<CalendarView> with TickerProviderStateMix
 
   Map<DateTime, List> _buildEventDataFromStream() {
     Map<DateTime, List> mapOutput = new Map<DateTime, List>();
+    if (_streamedEvents.isEmpty) return {};
     _streamedEvents.forEach((event) {
       DateTime eventDateTime = DateTime.parse(event.dateTime);
       List defaults = setDefaultIfAbsent(eventDateTime);

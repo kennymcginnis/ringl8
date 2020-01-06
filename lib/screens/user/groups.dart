@@ -4,15 +4,18 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:ringl8/components/group_icon.dart';
 import 'package:ringl8/helpers/flushbar.dart';
+import 'package:ringl8/main.dart';
 import 'package:ringl8/models/choice.dart';
 import 'package:ringl8/models/group.dart';
 import 'package:ringl8/models/wrapper.dart';
+import 'package:ringl8/routes/app_state.dart';
 import 'package:ringl8/routes/application.dart';
-import 'package:ringl8/routes/route_handlers.dart';
 import 'package:ringl8/screens/group/create.dart';
 import 'package:ringl8/services/group.dart';
 
 class UsersGroups extends StatelessWidget {
+  final application = sl.get<AppState>();
+
   final List<Choice> choices = <Choice>[
     Choice(title: 'My Groups', icon: Icon(Icons.group)),
     Choice(title: 'My Invites', icon: Icon(Icons.person_add)),
@@ -73,6 +76,8 @@ class UsersGroups extends StatelessWidget {
           padding: EdgeInsets.all(4.0),
           child: ListTile(
             onTap: () {
+              application.currentGroup = group;
+              application.currentGroupUID = group.uid;
               return Application.router.navigateTo(
                 context,
                 '/group',

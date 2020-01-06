@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ringl8/components/folding_cell.dart';
+import 'package:ringl8/components/user_avatar.dart';
 import 'package:ringl8/models/event.dart';
 import 'package:ringl8/models/user_event.dart';
 import 'package:ringl8/services/event.dart';
@@ -58,19 +59,10 @@ class EventList extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                showListOnly
-                    ? Container(padding: EdgeInsets.only(left: 15.0))
-                    : Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: SizedBox(
-                          width: 42,
-                          height: 42,
-                          child: showListOnly
-                              ? Container(width: 0, height: 0)
-                              : CircleAvatar(child: Text(selectedEvent.user.initials())),
-                        ),
-                      ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: UserAvatar(user: selectedEvent.user, size: AvatarSize.small),
+                ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:ringl8/components/extended_button.dart';
 import 'package:ringl8/components/input_text_field.dart';
+import 'package:ringl8/components/user_avatar.dart';
 import 'package:ringl8/helpers/flushbar.dart';
 import 'package:ringl8/helpers/validators.dart';
 import 'package:ringl8/main.dart';
@@ -82,7 +83,7 @@ class _GroupMembersState extends State<GroupMembers> {
     return Card(
       margin: EdgeInsets.only(bottom: 12.0),
       child: ListTile(
-        leading: CircleAvatar(child: Text(user.initials())),
+        leading: UserAvatar(user: user, size: AvatarSize.small),
         title: Text(user.fullName()),
 //        trailing: IconButton(
 //          icon: Icon(

@@ -24,8 +24,6 @@ class AppComponent extends StatefulWidget {
 }
 
 class AppComponentState extends State<AppComponent> {
-  var application = sl.get<AppState>();
-
   @override
   initState() {
     final router = Router();

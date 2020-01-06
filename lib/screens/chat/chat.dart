@@ -12,6 +12,11 @@ import 'package:ringl8/services/message.dart';
 
 class ChatScreen extends StatefulWidget {
   final auth = FirebaseAuth.instance;
+  Query query;
+
+  ChatScreen() {
+    this.query = MessageService().messagesByRecipient;
+  }
 
   @override
   ChatScreenState createState() => ChatScreenState();
@@ -36,7 +41,7 @@ class ChatScreenState extends State<ChatScreen> {
               Flexible(
                 child: FirestoreAnimatedList(
                   key: ValueKey("list"),
-                  query: MessageService().messagesByRecipient,
+                  query: widget.query,
                   padding: EdgeInsets.all(8.0),
                   reverse: true,
                   //comparing timestamp of messages to check which one would appear first

@@ -1,7 +1,9 @@
+import 'package:avataaar_image/avataaar_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ringl8/components/loading.dart';
+import 'package:ringl8/components/user_avatar.dart';
 import 'package:ringl8/main.dart';
 import 'package:ringl8/models/user.dart';
 import 'package:ringl8/routes/app_state.dart';
@@ -69,13 +71,7 @@ class MessageListItem extends StatelessWidget {
         children: <Widget>[
           Container(
             margin: EdgeInsets.fromLTRB(5.0, 20.0, 0.0, 0.0),
-            child: CircleAvatar(
-              backgroundColor: Colors.blue.shade800,
-              child: Text(
-                sender.initials(),
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+            child: UserAvatar(user: sender, size: AvatarSize.small),
           ),
         ],
       ),
@@ -89,13 +85,7 @@ class MessageListItem extends StatelessWidget {
         children: <Widget>[
           Container(
             margin: EdgeInsets.fromLTRB(0.0, 20.0, 5.0, 0.0),
-            child: CircleAvatar(
-              backgroundColor: Colors.black87,
-              child: Text(
-                sender.initials(),
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+            child: UserAvatar(user: sender, size: AvatarSize.small),
           ),
         ],
       ),

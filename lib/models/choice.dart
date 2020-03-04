@@ -4,6 +4,7 @@ class Choice {
   final String title;
   final Widget icon;
   final Widget content;
+  final int status;
 
-  const Choice({this.title, this.icon, this.content});
+  const Choice({this.title, this.icon, this.content, this.status});
 }

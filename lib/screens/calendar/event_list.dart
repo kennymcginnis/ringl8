@@ -175,7 +175,7 @@ class EventList extends StatelessWidget {
         heroTag: 'setStatus$index$status',
         onPressed: () {
           EventService(uid: selectedEvent.uid).updateEvent(new Event(
-            userUID: selectedEvent.user.uid,
+            user: selectedEvent.user.uid,
             status: status,
             dateTime: formatter.format(selectedDay),
           ));

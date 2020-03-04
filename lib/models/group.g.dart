@@ -13,7 +13,6 @@ Group _$GroupFromJson(Map<String, dynamic> json) {
     initials: json['initials'] as String,
     color: json['color'] as int,
     invites: (json['invites'] as List)?.map((e) => e as String)?.toList(),
-    members: (json['members'] as List)?.map((e) => e as String)?.toList(),
   );
 }
 
@@ -23,5 +22,4 @@ Map<String, dynamic> _$GroupToJson(Group instance) => <String, dynamic>{
       'initials': instance.initials,
       'color': instance.color,
       'invites': instance.invites,
-      'members': instance.members,
     };

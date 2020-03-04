@@ -24,20 +24,10 @@ class GroupService {
     });
   }
 
-  Future updateGroupMembers(List<String> members) {
-    return groupCollection.document(application.currentGroupUID).updateData({
-      'members': members,
-    });
-  }
-
   Future updateGroupInvites(List<String> invites) {
     return groupCollection.document(application.currentGroupUID).updateData({
       'invites': invites,
     });
-  }
-
-  Membership membershipFromSnapshot(QuerySnapshot querySnapshot) {
-    return Membership(groupListFromSnapshot(querySnapshot));
   }
 
   Invitations invitationsFromSnapshot(QuerySnapshot querySnapshot) {
@@ -57,14 +47,6 @@ class GroupService {
         .document(application.currentGroupUID)
         .snapshots()
         .map((documentSnapshot) => Group.fromDocumentSnapshot(documentSnapshot));
-  }
-
-  Stream<Membership> get membership {
-    if (application.currentUserUID == null) return null;
-    return groupCollection
-        .where('members', arrayContains: application.currentUserUID)
-        .snapshots()
-        .map(membershipFromSnapshot);
   }
 
   Stream<Invitations> get invitations {

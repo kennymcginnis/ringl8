@@ -270,7 +270,7 @@ class _CalendarViewState extends State<CalendarView> with TickerProviderStateMix
       mapOutput.putIfAbsent(eventDateTime, () => defaults.toList());
 
       UserEvent userEvent =
-          mapOutput[eventDateTime].firstWhere((userEvent) => userEvent.user.uid == event.userUID);
+          mapOutput[eventDateTime].firstWhere((userEvent) => userEvent.user.uid == event.user);
       userEvent.uid = event.uid;
       userEvent.status = event.status;
     });

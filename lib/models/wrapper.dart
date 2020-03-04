@@ -5,9 +5,3 @@ class Invitations {
 
   Invitations(this.invitations);
 }
-
-class Membership {
-  final List<Group> membership;
-
-  Membership(this.membership);
-}

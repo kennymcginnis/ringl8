@@ -17,8 +17,8 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var isLarge = size == AvatarSize.large;
-    return (user.avatar == null && avataaar == null)
-        ? CircleAvatar(child: Text(user.initials()))
+    return (user?.avatar == null && avataaar == null)
+        ? CircleAvatar(child: Text(user?.initials() ?? ''))
         : AvataaarImage(
             avatar: avataaar ?? Avataaar.fromJson(user.avatar),
             errorImage: Icon(Icons.error),

@@ -30,7 +30,7 @@ class GroupIcon extends StatelessWidget {
           decoration: BoxDecoration(
             color: color,
             border: Border.all(
-              color: Color(0xffffffff),
+              color: ColorHelpers.blackOrWhiteContrastColor(color),
               width: 1.0,
               style: BorderStyle.solid,
             ),

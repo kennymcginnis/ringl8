@@ -10,9 +10,8 @@ class Group {
   final String initials;
   final int color;
   final List<String> invites;
-  final List<String> members;
 
-  Group({this.uid, this.name, this.initials, this.color, this.invites, this.members});
+  Group({this.uid, this.name, this.initials, this.color, this.invites});
 
   factory Group.fromJson(Map<String, dynamic> json) => _$GroupFromJson(json);
 
@@ -25,7 +24,6 @@ class Group {
       initials: documentSnapshot.data['initials'] as String,
       color: documentSnapshot.data['color'] as int,
       invites: (documentSnapshot.data['invites'] as List)?.map((e) => e as String)?.toList(),
-      members: (documentSnapshot.data['members'] as List)?.map((e) => e as String)?.toList(),
     );
   }
 
@@ -36,7 +34,6 @@ class Group {
       initials: group.initials ?? this.initials,
       color: group.color ?? this.color,
       invites: group.invites ?? this.invites,
-      members: group.members ?? this.members,
     );
   }
 }

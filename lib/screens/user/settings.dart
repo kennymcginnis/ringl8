@@ -10,6 +10,7 @@ import 'package:ringl8/helpers/avatar_helpers.dart';
 import 'package:ringl8/helpers/flushbar.dart';
 import 'package:ringl8/helpers/validators.dart';
 import 'package:ringl8/models/choice.dart';
+import 'package:ringl8/models/user_group.dart';
 import 'package:ringl8/models/user.dart';
 import 'package:ringl8/services/user.dart';
 
@@ -68,13 +69,19 @@ class _SettingsFormState extends State<SettingsForm> {
   void _updateSettings() async {
     if (_formKey.currentState.validate()) {
       try {
-        await UserService().updateUser(
-          _currentUser.copyWith(
-            firstName: _currentFirstName,
-            lastName: _currentLastName,
-            email: _currentEmail,
-          ),
-        );
+        List<UserGroup> groups = new List<UserGroup>();
+        groups.add(new UserGroup(group: '536eeU8PdCsipwAtaIFA'));
+        groups.add(new UserGroup(group: 'HldJQbFNBFAm2Nu4daTc'));
+        await UserService().updateGroups(groups);
+
+//        await UserService().updateUser(
+//          _currentUser.copyWith(
+//            firstName: _currentFirstName,
+//            lastName: _currentLastName,
+//            email: _currentEmail,
+//            groups: groups
+//          ),
+//        );
         FlushbarHelper(context, Status.success, 'User settings updated.').show();
       } catch (e) {
         FlushbarHelper(context, Status.error, e.toString()).show();
@@ -121,34 +128,36 @@ class _SettingsFormState extends State<SettingsForm> {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 20.0),
-                  InputTextField(
-                    icon: Icons.mail_outline,
-                    initialValue: _currentUser.email,
-                    keyboardType: TextInputType.emailAddress,
-                    labelText: 'Email',
-                    onChanged: (value) => setState(() => _currentEmail = value),
-                    validator: Validators.validateEmail,
-                  ),
-                  SizedBox(height: 10.0),
-                  InputTextField(
-                    icon: Icons.person,
-                    initialValue: _currentUser.firstName,
-                    labelText: 'First Name',
-                    onChanged: (value) => setState(() => _currentFirstName = value),
-                    validator: (value) => Validators.validateString(value, 'first name'),
-                  ),
-                  SizedBox(height: 10.0),
-                  InputTextField(
-                    icon: Icons.person,
-                    initialValue: _currentUser.lastName,
-                    labelText: 'Last Name',
-                    onChanged: (value) => setState(() => _currentLastName = value),
-                    validator: (value) => Validators.validateString(value, 'last name'),
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 20.0),
+                    InputTextField(
+                      icon: Icons.mail_outline,
+                      initialValue: _currentUser.email,
+                      keyboardType: TextInputType.emailAddress,
+                      labelText: 'Email',
+                      onChanged: (value) => setState(() => _currentEmail = value),
+                      validator: Validators.validateEmail,
+                    ),
+                    SizedBox(height: 10.0),
+                    InputTextField(
+                      icon: Icons.person,
+                      initialValue: _currentUser.firstName,
+                      labelText: 'First Name',
+                      onChanged: (value) => setState(() => _currentFirstName = value),
+                      validator: (value) => Validators.validateString(value, 'first name'),
+                    ),
+                    SizedBox(height: 10.0),
+                    InputTextField(
+                      icon: Icons.person,
+                      initialValue: _currentUser.lastName,
+                      labelText: 'Last Name',
+                      onChanged: (value) => setState(() => _currentLastName = value),
+                      validator: (value) => Validators.validateString(value, 'last name'),
+                    )
+                  ],
+                ),
               ),
             ),
             ExtendedButton(text: 'Update Contact', onTap: () => _updateSettings()),

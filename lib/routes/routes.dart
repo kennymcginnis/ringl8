@@ -11,6 +11,7 @@ class Routes {
   static String chat = '/chat';
   static String calendar = '/calendar';
   static String invitations = '/groups';
+  static String defaults = '/defaults';
   static String settings = '/settings';
   static String logout = '/logout';
 
@@ -27,6 +28,7 @@ class Routes {
     router.define(groups, handler: groupsHandler);
     router.define(chat, handler: chatHandler);
     router.define(calendar, handler: calendarHandler(false));
+    router.define(defaults, handler: defaultsHandler);
     router.define(settings, handler: settingsHandler);
     router.define(logout, handler: logoutHandler);
   }

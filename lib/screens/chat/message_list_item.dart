@@ -25,7 +25,7 @@ class MessageListItem extends StatelessWidget {
       sizeFactor: CurvedAnimation(parent: animation, curve: Curves.decelerate),
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(
+        child: sender == null ? null : Row(
           children: application.currentUserUID == senderUID
               ? getSentMessageLayout(sender)
               : getReceivedMessageLayout(sender),

@@ -12,7 +12,8 @@ import 'package:ringl8/screens/group/customize.dart';
 import 'package:ringl8/screens/group/home.dart';
 import 'package:ringl8/screens/group/members.dart';
 import 'package:ringl8/screens/home/home.dart';
-import 'package:ringl8/screens/user/groups.dart';
+import 'package:ringl8/screens/user/defaults.dart';
+import 'package:ringl8/screens/user/home.dart';
 import 'package:ringl8/screens/user/settings.dart';
 import 'package:ringl8/services/auth.dart';
 
@@ -25,13 +26,21 @@ var authHandler = Handler(handlerFunc: (BuildContext context, _) {
   application.currentUserEmail = _currentUser.email;
   return MultiProvider(
     providers: [
+      userProvider(),
       membershipProvider(),
     ],
     child: HomeComponent(),
   );
 });
 
-var groupHandler = Handler(handlerFunc: (BuildContext context, _) => GroupHome());
+var groupHandler = Handler(handlerFunc: (BuildContext context, _) {
+  return MultiProvider(
+    providers: [
+      currentEventProvider(),
+    ],
+    child: GroupHome(),
+  );
+});
 
 var customizeHandler = Handler(handlerFunc: (BuildContext context, _) => CustomizeGroup());
 
@@ -50,7 +59,7 @@ var groupsHandler = Handler(handlerFunc: (BuildContext context, _) {
       membershipProvider(),
       invitationsProvider(),
     ],
-    child: UsersGroups(),
+    child: UsersHome(),
   );
 });
 
@@ -75,6 +84,15 @@ Handler calendarHandler(showListOnly) {
     );
   });
 }
+
+var defaultsHandler = Handler(handlerFunc: (BuildContext context, _) {
+  return MultiProvider(
+    providers: [
+      userProvider(),
+    ],
+    child: UsersGroupDefaults(),
+  );
+});
 
 var settingsHandler = Handler(handlerFunc: (BuildContext context, _) {
   return MultiProvider(

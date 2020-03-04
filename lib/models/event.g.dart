@@ -9,8 +9,8 @@ part of 'event.dart';
 Event _$EventFromJson(Map<String, dynamic> json) {
   return Event(
     uid: json['uid'] as String,
-    userUID: json['userUID'] as String,
-    groupUID: json['groupUID'] as String,
+    user: json['user'] as String,
+    group: json['group'] as String,
     status: json['status'] as int,
     dateTime: json['dateTime'] as String,
   );
@@ -18,8 +18,8 @@ Event _$EventFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'uid': instance.uid,
-      'userUID': instance.userUID,
-      'groupUID': instance.groupUID,
+      'user': instance.user,
+      'group': instance.group,
       'status': instance.status,
       'dateTime': instance.dateTime,
     };

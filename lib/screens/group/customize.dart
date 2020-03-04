@@ -57,7 +57,14 @@ class _CustomizeGroupState extends State<CustomizeGroup> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Update group settings'),
+        title: Row(
+          children: <Widget>[
+            GroupIcon(application.currentGroup, size: Size.small),
+            SizedBox(width: 10.0),
+            Text('Update group settings'),
+          ],
+        ),
+        centerTitle: true,
       ),
       body: Form(
         key: _formKey,
@@ -78,17 +85,6 @@ class _CustomizeGroupState extends State<CustomizeGroup> {
                         color: _currentColor,
                       ),
                     ),
-                  ),
-                  SizedBox(width: 20.0),
-                  GroupIcon(
-                    application.currentGroup.copyWith(
-                      Group(
-                        name: _currentName,
-                        initials: _currentInitials,
-                        color: _currentColor,
-                      ),
-                    ),
-                    size: Size.small,
                   ),
                   SizedBox(width: 20.0),
                   InkWell(
